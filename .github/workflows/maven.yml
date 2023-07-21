@@ -4,7 +4,6 @@
 name: Maven
 
 on:
-on:
   push:
     paths:
       - 'ubuntu-back-end/**'  # This line makes the workflow trigger only if changes are made in the "ubuntu-back-end" folder
