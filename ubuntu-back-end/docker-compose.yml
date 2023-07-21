@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  # Spring Boot app service
+  ubuntu-backend:
+    build: .  # Replace with the actual path to your Spring Boot app
+    ports:
+      - "8080:8080"  # Expose the Spring Boot app's port
+
+  # PostgreSQL service
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: budgetbuddy_v1  # Replace 'your_db_name' with your desired database name
+      POSTGRES_USER: admin  # Replace 'your_db_user' with your desired database user
+      POSTGRES_PASSWORD: postgres  # Replace 'your_db_password' with your desired database password
+    ports:
+      - "5432:5432"  # Expose the PostgreSQL port
+    # Mount the init.sql script into the container
+    volumes:
+      - ./src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql
