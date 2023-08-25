@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: "ubuntu-back-end"
+  datasource:
+    password: postgres
+    username: admin
+    url: jdbc:postgresql://localhost:5432/budgetbuddy_v1

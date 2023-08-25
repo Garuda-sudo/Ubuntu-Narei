@@ -1,0 +1,455 @@
+openapi: 3.0.3
+info:
+  title: BudgetBuddy API
+  description: API for BudgetBuddy
+  version: 1.0.0
+tags:
+  - name: budget
+    description: Budget operations
+  - name: category
+    description: Category operations
+  - name: transaction
+    description: Transaction operations
+  - name: user
+    description: User operationss
+paths:
+  /budget:
+    get:
+      tags:
+        - budget
+      summary: Get all budgets
+      operationId: getAllBudgets
+      parameters:
+        - name: userId
+          in: header
+          description: id of user to return budgets for
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BudgetResponse'
+    post:
+      tags:
+        - budget
+      summary: Create a budget
+      operationId: createBudget
+      requestBody:
+        description: Budget object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Budget'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetResponse'
+  /budget/{id}:
+    get:
+      tags:
+        - budget
+      summary: Get budget by id
+      operationId: getBudgetById
+      parameters:
+        - name: id
+          in: path
+          description: id of budget to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetResponse'
+        '404':
+          description:
+            Not Found
+    put:
+      tags:
+        - budget
+      summary: Update budget
+      operationId: updateBudget
+      parameters:
+        - name: id
+          in: path
+          description: id of budget to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Budget object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Budget'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetResponse'
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - budget
+      summary: Delete budget
+      operationId: deleteBudget
+      parameters:
+        - name: id
+          in: path
+          description: id of budget to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description:
+            Not Found
+  /category:
+    get:
+      tags:
+        - category
+      summary: Get all categories
+      operationId: getAllCategories
+      parameters:
+        - name: userId
+          in: header
+          description: id of user to return categories for
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+    post:
+      tags:
+        - category
+      summary: Create a category
+      operationId: createCategory
+      requestBody:
+        description: Category object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+  /category/{id}:
+    get:
+      tags:
+        - category
+      summary: Get category by id
+      operationId: getCategoryById
+      parameters:
+        - name: id
+          in: path
+          description: id of category to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description:
+            Not Found
+    put:
+      tags:
+        - category
+      summary: Update category
+      operationId: updateCategory
+      parameters:
+        - name: id
+          in: path
+          description: id of category to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Category object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - category
+      summary: Delete category
+      operationId: deleteCategory
+      parameters:
+        - name: id
+          in: path
+          description: id of category to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description:
+            Not Found
+  /transaction:
+    get:
+      tags:
+        - transaction
+      summary: Get all transactions
+      operationId: getAllTransactions
+      parameters:
+        - name: userId
+          in: header
+          description: id of user to return transactions for
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionResponse'
+    post:
+      tags:
+        - transaction
+      summary: Create a transaction
+      operationId: createTransaction
+      requestBody:
+        description: Transaction object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+  /transaction/{id}:
+    get:
+      tags:
+        - transaction
+      summary: Get transaction by id
+      operationId: getTransactionById
+      parameters:
+        - name: id
+          in: path
+          description: id of transaction to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '404':
+          description:
+            Not Found
+    put:
+      tags:
+        - transaction
+      summary: Update transaction
+      operationId: updateTransaction
+      parameters:
+        - name: id
+          in: path
+          description: id of transaction to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Transaction object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - transaction
+      summary: Delete transaction
+      operationId: deleteTransaction
+      parameters:
+        - name: id
+          in: path
+          description: id of transaction to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description:
+            Not Found
+components:
+  schemas:
+    Budget:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        amountLimit:
+          type: number
+          format: double
+        periodType:
+          $ref: '#/components/schemas/PeriodType'
+        categoryId:
+          type: integer
+          format: int64
+        userId:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format:
+            date-time
+    BudgetResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        amountLimit:
+          type: number
+          format: double
+        periodType:
+          $ref: '#/components/schemas/PeriodType'
+        category:
+          $ref: '#/components/schemas/Category'
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format:
+            date-time
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        userId:
+          type:
+            string
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        amount:
+          type: number
+          format: double
+        date:
+          type: string
+          format: date-time
+        categoryId:
+          type: integer
+          format: int64
+        userId:
+          type: string
+    TransactionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        amount:
+          type: number
+          format: double
+        date:
+          type: string
+          format: date-time
+        category:
+          $ref: '#/components/schemas/Category'
+        userId:
+          type: string
+    PeriodType:
+      type: string
+      enum:
+        - WEEKLY
+        - MONTHLY
+        - YEARLY
+        - ONETIME
