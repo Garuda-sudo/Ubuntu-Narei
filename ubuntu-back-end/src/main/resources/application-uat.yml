@@ -1,7 +1,0 @@
-spring:
-  datasource:
-    password: rips-agnises-gasometric-dan-quarle
-    username: budgetbuddy_usr
-    url: jdbc:postgresql://server.budgetbuddy.oxb.xyz:32768/budgetbuddy?currentSchema=budgetbuddy_v1
-  flyway:
-    locations: classpath:db/migration/all,classpath:db/migration/uat
