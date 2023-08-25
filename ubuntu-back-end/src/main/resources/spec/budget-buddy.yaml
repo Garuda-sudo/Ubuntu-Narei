@@ -364,9 +364,6 @@ components:
           format: double
         periodType:
           $ref: '#/components/schemas/PeriodType'
-        categoryId:
-          type: integer
-          format: int64
         userId:
           type: string
         startDate:
@@ -389,8 +386,6 @@ components:
           format: double
         periodType:
           $ref: '#/components/schemas/PeriodType'
-        category:
-          $ref: '#/components/schemas/Category'
         startDate:
           type: string
           format: date-time
