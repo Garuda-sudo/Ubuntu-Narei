@@ -1,58 +1,58 @@
 package co.za.ubuntu.ubuntubackend.controller;
 
-import co.za.ubuntu.ubuntubackend.domain.Budget;
-import co.za.ubuntu.ubuntubackend.domain.BudgetRequest;
-import co.za.ubuntu.ubuntubackend.services.BudgetService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import co.za.ubuntu.api.BudgetApi;
+import co.za.ubuntu.model.Budget;
+import co.za.ubuntu.model.BudgetResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
+import java.util.List;
 
 @RestController
-@RequestMapping("/ubuntu/budget")
-@RequiredArgsConstructor
-public class BudgetController {
-
-    BudgetService budgetService;
-
-    @PostMapping("/create")
-    public ResponseEntity<Budget> createBudget(
-            @RequestBody BudgetRequest budgetRequest
-    ) {
-
-        var budget = budgetService.createBudget(budgetRequest);
-        return ResponseEntity.ok(budget);
+public class BudgetController implements BudgetApi {
+    /**
+     * @param budget Budget object that needs to be added (optional)
+     * @return
+     */
+    @Override
+    public ResponseEntity<BudgetResponse> _createBudget(Budget budget) {
+        return null;
     }
 
-    @GetMapping("/retrieve")
-    public ResponseEntity<Budget> retrieveBudget(
-            @RequestBody UUID budgetId
-    ) {
-
-        var budget = budgetService.getBudget(budgetId);
-        return ResponseEntity.ok(budget);
+    /**
+     * @param id id of budget to delete (required)
+     * @return
+     */
+    @Override
+    public ResponseEntity<Void> _deleteBudget(Long id) {
+        return null;
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<Budget> updateBudget(
-            @RequestBody BudgetRequest budgetRequest,
-            @RequestParam("budgetId") UUID budgetId
-    ) {
-
-        var updatedBudget = budgetService.updateBudget(budgetRequest, budgetId);
-
-        return ResponseEntity.ok(updatedBudget);
+    /**
+     * @param userId id of user to return budgets for (required)
+     * @return
+     */
+    @Override
+    public ResponseEntity<List<BudgetResponse>> _getAllBudgets(Long userId) {
+        return null;
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<HttpStatus> deleteBudget(
-            @RequestParam("budgetId") UUID budgetId
-    ) {
+    /**
+     * @param id id of budget to return (required)
+     * @return
+     */
+    @Override
+    public ResponseEntity<BudgetResponse> _getBudgetById(Long id) {
+        return null;
+    }
 
-        budgetService.deleteBudget(budgetId);
-
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+    /**
+     * @param id     id of budget to update (required)
+     * @param budget Budget object that needs to be updated (optional)
+     * @return
+     */
+    @Override
+    public ResponseEntity<BudgetResponse> _updateBudget(Long id, Budget budget) {
+        return null;
     }
 }
