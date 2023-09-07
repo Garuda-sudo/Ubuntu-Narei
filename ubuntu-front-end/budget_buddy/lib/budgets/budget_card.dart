@@ -23,7 +23,7 @@ class _BudgetCardState extends State<BudgetCard> {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             height: 20,
-            width: 100,
+            width: 150,
             color: Colors.grey.shade200,
           ),
         ),

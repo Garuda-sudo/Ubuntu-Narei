@@ -16,14 +16,48 @@ class _BudgetCarousalState extends State<BudgetCarousal> {
       children: [
         Container(
           padding: const EdgeInsets.all(2.0),
-          height: 150,
+          height: 200,
           color: Colors.white,
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (BuildContext context, int index) {
-                return const BudgetCard();
-              }),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(2, 2),
+                      spreadRadius: 2,
+                      blurRadius: 7)
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 120,
+                      color: Colors.white,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (BuildContext context, int index) {
+                            return const BudgetCard();
+                          }),
+                    ),
+                  ),
+                  const Center(
+                    child: Icon(Icons.more_horiz),
+                  )
+                ],
+              ),
+            ),
+          ),
         )
       ],
     );

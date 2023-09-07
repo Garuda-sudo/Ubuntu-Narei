@@ -12,7 +12,7 @@ class _LandingPageGraphComponentState extends State<LandingPageGraphComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      height: 150,
       width: 70,
       color: Colors.amber,
     );
