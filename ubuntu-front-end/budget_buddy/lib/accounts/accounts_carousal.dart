@@ -34,7 +34,7 @@ class _AccountCarousalState extends State<AccountCarousal> {
           child: const Text("Accounts"),
         ),
         Container(
-          height: 200.0,
+          height: 150.0,
           color: Colors.white,
           padding: const EdgeInsets.all(2.0),
           child: ListView.builder(

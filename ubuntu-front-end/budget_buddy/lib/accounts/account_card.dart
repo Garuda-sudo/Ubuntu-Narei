@@ -19,14 +19,14 @@ class _AccountCardState extends State<AccountCard> {
               BoxShadow(color: Colors.grey, offset: Offset(2.0, 2.0))
             ],
             color: Colors.grey.shade200),
-        width: 200,
+        width: 150,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Stack(
             children: [
               Container(
-                padding: const EdgeInsets.only(left: 10.0),
-                height: 50.0,
+                padding: const EdgeInsets.only(left: 5.0),
+                height: 10.0,
                 child: const Icon(Icons.monetization_on_rounded),
               ),
               const Padding(
