@@ -16,7 +16,7 @@ class _LandingPageGraphComponentState extends State<LandingPageGraphComponent> {
       children: [
         Container(
           padding: const EdgeInsets.all(2.0),
-          height: 200,
+          height: 250,
           color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -52,7 +52,7 @@ class _LandingPageGraphComponentState extends State<LandingPageGraphComponent> {
                                       'Available Balance:',
                                       style: TextStyle(
                                           fontSize: 15,
-                                          color: Colors.black,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Text(
@@ -75,12 +75,14 @@ class _LandingPageGraphComponentState extends State<LandingPageGraphComponent> {
                                   Text(
                                     'Current Networth:',
                                     style: TextStyle(
-                                        color: Colors.grey,
+                                        fontSize: 15,
+                                        color: Colors.white,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     'R 100 000.00',
                                     style: TextStyle(
+                                        fontSize: 25,
                                         color: Colors.amber,
                                         fontWeight: FontWeight.bold),
                                   )

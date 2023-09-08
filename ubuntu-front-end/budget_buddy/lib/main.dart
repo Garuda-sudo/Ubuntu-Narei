@@ -45,7 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
           elevation: 20,
         ),
-        body: const LandingPage(),
+        body:
+            SafeArea(child: ListView(children: const <Widget>[LandingPage()])),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: const FloatingActionButton(
           onPressed: null,
