@@ -31,6 +31,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int currentTab = 0;
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -43,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
-          elevation: 20,
+          elevation: 5.0,
         ),
         body:
             SafeArea(child: ListView(children: const <Widget>[LandingPage()])),
@@ -53,6 +55,12 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Icon(Icons.add),
         ),
         bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentTab,
+          onTap: (value) {
+            setState(() {
+              currentTab = value;
+            });
+          },
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -62,6 +70,10 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.person),
               label: 'Profile',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.newspaper),
+              label: 'Financial News',
+            )
           ],
         ));
   }

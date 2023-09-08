@@ -97,7 +97,9 @@ class _LandingPageGraphComponentState extends State<LandingPageGraphComponent> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(),
+                      child: Container(
+                        child: const Text('Graph widgets will go here'),
+                      ),
                     ),
                   )
                 ],
