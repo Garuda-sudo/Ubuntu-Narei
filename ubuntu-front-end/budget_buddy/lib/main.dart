@@ -1,7 +1,9 @@
+import 'package:budget_buddy/budgets/budget_page/budget_page.dart';
 import 'package:budget_buddy/config/scroll_behaviour.dart';
 import 'package:budget_buddy/landing_page/widgets/landing_page.dart';
 import 'package:budget_buddy/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,9 +15,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerDelegate: _router.routerDelegate,
+      routeInformationParser: _router.routeInformationParser,
+      routeInformationProvider: _router.routeInformationProvider,
       theme: customTheme,
-      home: const MyHomePage(title: 'Budget Buddy'),
       scrollBehavior: MyCustomScrollBehavior(),
     );
   }
@@ -57,9 +61,18 @@ class _MyHomePageState extends State<MyHomePage> {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentTab,
           onTap: (value) {
-            setState(() {
-              currentTab = value;
-            });
+            switch (value) {
+              case 0:
+                context.go('/');
+                print(value);
+                break;
+              case 1:
+                context.go('/budgets');
+                break;
+            }
+            // setState(() {
+            //   currentTab = value;
+            // });
           },
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -78,3 +91,16 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 }
+
+final GoRouter _router = GoRouter(routes: <GoRoute>[
+  GoRoute(
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return const MyHomePage(title: 'Budget Buddy');
+      }),
+  GoRoute(
+      path: '/budgets',
+      builder: (BuildContext context, GoRouterState state) {
+        return const BudgetPage();
+      })
+]);

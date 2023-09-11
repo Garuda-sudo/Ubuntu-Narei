@@ -1,6 +1,4 @@
-import 'package:budget_buddy/accounts/account_card.dart';
 import 'package:budget_buddy/accounts/accounts_carousal.dart';
-import 'package:budget_buddy/budgets/budget_card.dart';
 import 'package:budget_buddy/budgets/budget_carousal.dart';
 import 'package:budget_buddy/landing_page/widgets/landing_page_graph_component.dart';
 import 'package:flutter/material.dart';
