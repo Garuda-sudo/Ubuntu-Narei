@@ -1,4 +1,5 @@
 import 'package:budget_buddy/budgets/budget_card.dart';
+import 'package:budget_buddy/budgets/budget_page/budget_page.dart';
 import 'package:flutter/material.dart';
 
 class BudgetCarousal extends StatefulWidget {
@@ -47,7 +48,15 @@ class _BudgetCarousalState extends State<BudgetCarousal> {
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
                           itemBuilder: (BuildContext context, int index) {
-                            return const BudgetCard();
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const BudgetPage()));
+                              },
+                              child: const BudgetCard(),
+                            );
                           }),
                     ),
                   ),
