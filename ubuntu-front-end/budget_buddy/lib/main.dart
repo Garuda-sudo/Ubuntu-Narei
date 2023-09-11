@@ -64,7 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
             switch (value) {
               case 0:
                 context.go('/');
-                print(value);
                 break;
               case 1:
                 context.go('/budgets');
