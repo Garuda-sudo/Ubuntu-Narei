@@ -4,4 +4,4 @@ spring:
   datasource:
     password: postgres
     username: admin
-    url: jdbc:postgresql://localhost:5432/budgetbuddy_v1
+    url: jdbc:postgresql://localhost:5432/budgetbuddy_v1?currenSchema=budgetbuddy

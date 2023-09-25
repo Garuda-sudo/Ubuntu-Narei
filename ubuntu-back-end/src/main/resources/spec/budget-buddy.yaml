@@ -365,7 +365,7 @@ components:
         periodType:
           $ref: '#/components/schemas/PeriodType'
         userId:
-          type: string
+          type: integer
         startDate:
           type: string
           format: date-time
@@ -403,7 +403,7 @@ components:
           type: string
         userId:
           type:
-            string
+            integer
     Transaction:
       type: object
       properties:
@@ -422,7 +422,7 @@ components:
           type: integer
           format: int64
         userId:
-          type: string
+          type: integer
     TransactionResponse:
       type: object
       properties:
@@ -440,7 +440,7 @@ components:
         category:
           $ref: '#/components/schemas/Category'
         userId:
-          type: string
+          type: integer
     PeriodType:
       type: string
       enum:
