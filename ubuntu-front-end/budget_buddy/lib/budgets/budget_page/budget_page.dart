@@ -23,7 +23,7 @@ class _BudgetPageState extends State<BudgetPage> {
             color: Colors.green,
           ),
           Container(
-            height: 300,
+            height: 250,
             color: Colors.white,
             child: const Center(child: Text('Budget chart widget goes here')),
           ),
@@ -35,28 +35,6 @@ class _BudgetPageState extends State<BudgetPage> {
                         topLeft: Radius.circular(25),
                         topRight: Radius.circular(25))),
                 child: const BudgetSummaryList()),
-          )
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        // currentIndex: currentTab,
-        // onTap: (value) {
-        //   setState(() {
-        //     currentTab = value;
-        //   });
-        // },
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.newspaper),
-            label: 'Financial News',
           )
         ],
       ),
