@@ -19,7 +19,7 @@ class _NewsFeedState extends State<NewsFeed> {
           child: Container(
             height: 90,
             decoration: BoxDecoration(
-                color: Colors.amber[100],
+                color: Colors.indigo[100],
                 borderRadius: BorderRadius.circular(8.0),
                 boxShadow: [
                   BoxShadow(

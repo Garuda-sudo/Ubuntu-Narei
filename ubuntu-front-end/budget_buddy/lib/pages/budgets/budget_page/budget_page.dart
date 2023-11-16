@@ -1,4 +1,4 @@
-import 'package:budget_buddy/budgets/budget_page/budget_summary_list.dart';
+import 'package:budget_buddy/pages/budgets/budget_page/budget_summary_list.dart';
 import 'package:flutter/material.dart';
 
 class BudgetPage extends StatefulWidget {

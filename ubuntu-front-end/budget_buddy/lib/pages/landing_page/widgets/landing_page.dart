@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:budget_buddy/accounts/accounts_carousal.dart';
-import 'package:budget_buddy/budgets/budget_carousal.dart';
-import 'package:budget_buddy/budgets/budget_carousal_alternate.dart';
-import 'package:budget_buddy/landing_page/widgets/landing_page_graph_component.dart';
-import 'package:budget_buddy/landing_page/widgets/news_feed.dart';
-import 'package:budget_buddy/landing_page/widgets/news_feed_budget_card.dart';
+import 'package:budget_buddy/pages/accounts/accounts_carousal.dart';
+import 'package:budget_buddy/pages/budgets/budget_carousal.dart';
+import 'package:budget_buddy/pages/budgets/budget_carousal_alternate.dart';
+import 'package:budget_buddy/pages/landing_page/widgets/landing_page_graph_component.dart';
+import 'package:budget_buddy/pages/landing_page/widgets/news_feed.dart';
+import 'package:budget_buddy/pages/landing_page/widgets/news_feed_budget_card.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -14,6 +14,10 @@ class LandingPage extends StatefulWidget {
   @override
   State<LandingPage> createState() => _LandingPageState();
 }
+
+void getRecommendedBudgets() {}
+
+void getNewsSnippets() {}
 
 class _LandingPageState extends State<LandingPage> {
   @override
@@ -246,7 +250,7 @@ class _LandingPageState extends State<LandingPage> {
                                   Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.45,
-                                      color: Colors.white,
+                                      color: Colors.transparent,
                                       child: const NewsFeedBudgetCard())
                                 ],
                               ),
@@ -259,7 +263,7 @@ class _LandingPageState extends State<LandingPage> {
                                     MediaQuery.of(context).size.height * 0.3,
                                 width: MediaQuery.of(context).size.width * 0.95,
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Colors.transparent,
                                 ),
                               ),
                             )
@@ -273,56 +277,3 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 }
-
-// return Column(
-//       mainAxisAlignment: MainAxisAlignment.start,
-//       crossAxisAlignment: CrossAxisAlignment.stretch,
-//       children: [
-//         const SizedBox(
-//           height: 5.0,
-//         ),
-//         const LandingPageGraphComponent(),
-//         const Padding(
-//           padding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.start,
-//             children: [
-//               Text("My Budgets"),
-//             ],
-//           ),
-//         ),
-//         const BudgetCarousal(),
-//         const AccountCarousal(),
-//         SizedBox(
-//           height: MediaQuery.of(context).size.height,
-//           child: DraggableScrollableSheet(builder: (context, scrollController) {
-//             return Container(
-//               height: 10,
-//               color: Colors.amber,
-//             );
-//           }),
-//         )
-//       ],
-//     );
-
-// return Container(
-    //   height: MediaQuery.of(context).size.height,
-    //   width: MediaQuery.of(context).size.width,
-    //   child: CustomScrollView(
-    //     slivers: [
-    //       SliverList(
-    //           delegate: SliverChildListDelegate([
-    //         const LandingPageGraphComponent(),
-    //         Container(
-    //           height: 300,
-    //           color: Colors.amber,
-    //         ),
-    //         Container(
-    //           height: 300,
-    //           color: Colors.red,
-    //         )
-    //       ]))
-    //     ],
-    //   ),
-    // );
-

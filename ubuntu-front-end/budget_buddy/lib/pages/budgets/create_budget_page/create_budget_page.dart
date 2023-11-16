@@ -1,4 +1,4 @@
-import 'package:budget_buddy/budgets/create_budget_page/budget_parallax_position.dart';
+import 'package:budget_buddy/pages/budgets/create_budget_page/budget_parallax_position.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

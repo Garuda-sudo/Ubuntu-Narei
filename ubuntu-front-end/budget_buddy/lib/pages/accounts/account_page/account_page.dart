@@ -1,4 +1,4 @@
-import 'package:budget_buddy/landing_page/widgets/landing_page_graph_component.dart';
+import 'package:budget_buddy/pages/landing_page/widgets/landing_page_graph_component.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:budget_buddy/accounts/account_card.dart';
+import 'package:budget_buddy/pages/accounts/account_card.dart';
 import 'package:flutter/material.dart';
 
 class AccountCarousal extends StatefulWidget {

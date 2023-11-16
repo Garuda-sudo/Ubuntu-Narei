@@ -1,5 +1,5 @@
-import 'package:budget_buddy/budgets/budget_card.dart';
-import 'package:budget_buddy/budgets/budget_page/budget_page.dart';
+import 'package:budget_buddy/pages/budgets/budget_card.dart';
+import 'package:budget_buddy/pages/budgets/budget_page/budget_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
