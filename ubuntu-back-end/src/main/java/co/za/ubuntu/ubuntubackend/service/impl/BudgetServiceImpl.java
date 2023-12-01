@@ -1,38 +1,31 @@
 package co.za.ubuntu.ubuntubackend.service.impl;
 
 import co.za.ubuntu.model.Budget;
-import co.za.ubuntu.ubuntubackend.domain.dto.BudgetDto;
-import co.za.ubuntu.ubuntubackend.domain.dto.UserDto;
+import co.za.ubuntu.model.BudgetResponse;
 import co.za.ubuntu.ubuntubackend.domain.exception.NotFoundException;
-import co.za.ubuntu.ubuntubackend.domain.mapper.BudgetDomainMapper;
 import co.za.ubuntu.ubuntubackend.persistence.entity.BudgetEntity;
 import co.za.ubuntu.ubuntubackend.persistence.entity.UserEntity;
-import co.za.ubuntu.ubuntubackend.persistence.mapper.BudgetMapper;
-import co.za.ubuntu.ubuntubackend.persistence.mapper.UserMapper;
+import co.za.ubuntu.ubuntubackend.persistence.mapper.BudgetEntityMapper;
 import co.za.ubuntu.ubuntubackend.persistence.repository.BudgetRepository;
 import co.za.ubuntu.ubuntubackend.persistence.repository.UserRepository;
 import co.za.ubuntu.ubuntubackend.service.BudgetService;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+@Service
 public class BudgetServiceImpl implements BudgetService {
 
     BudgetRepository budgetRepository;
     UserRepository userRepository;
-    BudgetMapper budgetMapper;
-    UserMapper userMapper;
-    BudgetDomainMapper budgetDomainMapper;
+    BudgetEntityMapper budgetMapper;
 
     /**
      * @param userId The unique identifier of the user.
      * @return List<Budget>
      */
     @Override
-    public List<Budget> getUserBudgets(Integer userId) {
+    public List<BudgetResponse> getUserBudgets(Integer userId) {
         UserEntity userEntity = userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException("No user found with ID: " + userId)
         );
@@ -40,9 +33,10 @@ public class BudgetServiceImpl implements BudgetService {
                 () -> new NotFoundException("No budgets found for user with ID: " + userId)
         );
 
-        List<BudgetDto> userBudgets = budgetMapper.map(budgetEntities);
-
-        return budgetDomainMapper.map(userBudgets);
+//        List<BudgetDto> userBudgets = budgetMapper.map(budgetEntities);
+//
+//        return budgetDomainMapper.map(userBudgets);
+        return List.of(BudgetResponse.builder().build());
     }
 
     /**
@@ -50,24 +44,21 @@ public class BudgetServiceImpl implements BudgetService {
      * @return Budget
      */
     @Override
-    public Budget getBudget(Integer budgetId) {
+    public BudgetResponse getBudget(Integer budgetId) {
         BudgetEntity budgetEntity = budgetRepository.findById(budgetId).orElseThrow(
                 () -> new NotFoundException("No budget found with ID: " + budgetId)
         );
 
-        return budgetDomainMapper.map(budgetMapper.map(budgetEntity));
+//        return budgetDomainMapper.map(budgetMapper.map(budgetEntity));
+        return null;
     }
 
     /**
      * @param budget The budget object to create.
      */
     @Override
-    public void createBudget(Budget budget) {
-        UserDto userDto = userMapper.map(userRepository.findById(budget.getUserId()).orElseThrow(
-                () -> new NotFoundException("No user found with ID: " + budget.getUserId())
-        ));
-        //BudgetDto budgetDto = budgetDomainMapper.map(budget);
-
+    public BudgetResponse createBudget(Budget budget) {
+        budgetRepository.save(budgetEntity)
     }
 
     /**

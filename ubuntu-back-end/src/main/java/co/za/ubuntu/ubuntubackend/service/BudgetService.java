@@ -1,7 +1,7 @@
 package co.za.ubuntu.ubuntubackend.service;
 
 import co.za.ubuntu.model.Budget;
-import org.springframework.stereotype.Service;
+import co.za.ubuntu.model.BudgetResponse;
 
 import java.util.List;
 
@@ -13,7 +13,6 @@ import java.util.List;
  *
  * @since 0.0.1
  */
-@Service
 public interface BudgetService {
 
     /**
@@ -22,7 +21,7 @@ public interface BudgetService {
      * @param userId The unique identifier of the user.
      * @return A list of budgets associated with the user.
      */
-    List<Budget> getUserBudgets(Integer userId);
+    List<BudgetResponse> getUserBudgets(Integer userId);
 
     /**
      * Retrieves a budget by its unique identifier.
@@ -30,14 +29,14 @@ public interface BudgetService {
      * @param budgetId The unique identifier of the budget to retrieve.
      * @return The budget object if found; otherwise, null.
      */
-    Budget getBudget(Integer budgetId);
+    BudgetResponse getBudget(Integer budgetId);
 
     /**
      * Creates a new budget.
      *
      * @param budget The budget object to create.
      */
-    void createBudget(Budget budget);
+    BudgetResponse createBudget(Budget budget);
 
     /**
      * Updates an existing budget.

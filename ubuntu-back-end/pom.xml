@@ -122,10 +122,9 @@
                             <modelPackage>co.za.ubuntu.model</modelPackage>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
-                                <delegatePattern>true</delegatePattern>
                                 <skipDefaultInterface>true</skipDefaultInterface>
                                 <useSpringBoot3>true</useSpringBoot3>
-                                <additionalModelTypeAnnotations>@lombok.NoArgsConstructor @lombok.Builder @lombok.AllArgsConstructor @lombok.Getter</additionalModelTypeAnnotations>
+<!--                                <additionalModelTypeAnnotations>@lombok.NoArgsConstructor @lombok.Builder @lombok.AllArgsConstructor @lombok.Getter</additionalModelTypeAnnotations>-->
                             </configOptions>
                             <typeMappings>
                                 <typeMapping>OffsetDateTime=java.time.LocalDateTime</typeMapping>

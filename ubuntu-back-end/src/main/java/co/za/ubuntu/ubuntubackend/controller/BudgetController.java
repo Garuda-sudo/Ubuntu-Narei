@@ -3,20 +3,24 @@ package co.za.ubuntu.ubuntubackend.controller;
 import co.za.ubuntu.api.BudgetApi;
 import co.za.ubuntu.model.Budget;
 import co.za.ubuntu.model.BudgetResponse;
+import co.za.ubuntu.ubuntubackend.service.BudgetService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class BudgetController implements BudgetApi {
+    private final BudgetService budgetService;
     /**
      * @param budget Budget object that needs to be added (optional)
      * @return
      */
     @Override
     public ResponseEntity<BudgetResponse> _createBudget(Budget budget) {
-        return null;
+        return ResponseEntity.ok().body(budgetService.createBudget(budget));
     }
 
     /**
@@ -25,7 +29,8 @@ public class BudgetController implements BudgetApi {
      */
     @Override
     public ResponseEntity<Void> _deleteBudget(Long id) {
-        return null;
+        budgetService.deleteBudget(Math.toIntExact(id));
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -34,7 +39,9 @@ public class BudgetController implements BudgetApi {
      */
     @Override
     public ResponseEntity<List<BudgetResponse>> _getAllBudgets(Long userId) {
-        return null;
+        return ResponseEntity.ok().body(
+                budgetService.getUserBudgets(Math.toIntExact(userId))
+        );
     }
 
     /**
@@ -43,7 +50,9 @@ public class BudgetController implements BudgetApi {
      */
     @Override
     public ResponseEntity<BudgetResponse> _getBudgetById(Long id) {
-        return null;
+        return ResponseEntity.ok().body(
+                budgetService.getBudget(Math.toIntExact(id))
+        );
     }
 
     /**
@@ -53,6 +62,7 @@ public class BudgetController implements BudgetApi {
      */
     @Override
     public ResponseEntity<BudgetResponse> _updateBudget(Long id, Budget budget) {
-        return null;
+        budgetService.updateBudget(budget);
+        return ResponseEntity.ok().build();
     }
 }
