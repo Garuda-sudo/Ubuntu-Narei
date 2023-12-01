@@ -1,35 +1,55 @@
-import 'dart:ui';
+import 'dart:js_interop';
 
-import 'package:budget_buddy/pages/accounts/accounts_carousal.dart';
-import 'package:budget_buddy/pages/budgets/budget_carousal.dart';
+import 'package:animations/animations.dart';
+import 'package:budget_buddy/data_providers/budgetDataProvider.dart';
+import 'package:budget_buddy/models/budget.dart';
 import 'package:budget_buddy/pages/budgets/budget_carousal_alternate.dart';
 import 'package:budget_buddy/pages/landing_page/widgets/landing_page_graph_component.dart';
 import 'package:budget_buddy/pages/landing_page/widgets/news_feed.dart';
 import 'package:budget_buddy/pages/landing_page/widgets/news_feed_budget_card.dart';
+import 'package:budget_buddy/services/budgetService.dart';
+import 'package:budget_buddy/utils/discover_news.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LandingPage extends StatefulWidget {
+import '../../budgets/create_budget_page/create_budget_page.dart';
+
+class LandingPage extends ConsumerWidget {
   const LandingPage({super.key});
 
+  void getRecommendedBudgets() {}
+
+  void getNewsSnippets() {}
+
   @override
-  State<LandingPage> createState() => _LandingPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(budgetDataProvider);
 
-void getRecommendedBudgets() {}
-
-void getNewsSnippets() {}
-
-class _LandingPageState extends State<LandingPage> {
-  @override
-  Widget build(BuildContext context) {
+    List<Budget> _budgetList = [];
     double bottomScrollerHeight = MediaQuery.of(context).size.height;
 
     return Stack(
       alignment: Alignment.topCenter,
       children: [
+        //Top area showing graphs regarding budgets
         const LandingPageGraphComponent(),
-        const Positioned(
-            top: 255.0, left: 0.0, right: 0.0, child: BudgetList()),
+        //Middle section displaying the current budgets
+        Positioned(
+            top: 255.0,
+            left: 0.0,
+            right: 0.0,
+            child: data.when(
+                data: (data) {
+                  List<Budget> budgetList = data.map((e) => e).toList();
+                  _budgetList = budgetList;
+                  return BudgetList(
+                    budgetList: budgetList,
+                  );
+                },
+                error: (err, s) => Text(err.toString()),
+                loading: () => const Center(
+                      child: CircularProgressIndicator(),
+                    ))),
         const Positioned(
           top: 255.0,
           left: 0.0,
@@ -59,6 +79,7 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
         ),
+        //The scrollable feed section
         DraggableScrollableSheet(
             initialChildSize: 0.17,
             minChildSize: 0.17,
@@ -187,15 +208,33 @@ class _LandingPageState extends State<LandingPage> {
                                         offset: const Offset(0, 7)),
                                   ]),
                             ),
-                            Container(
-                              height: 70,
-                              width: MediaQuery.of(context).size.width * 0.1,
-                              child: const Center(
-                                child: Icon(
-                                  Icons.menu_rounded,
-                                  color: Colors.white,
-                                ),
-                              ),
+                            //The floating action button to create a budget
+                            OpenContainer<Budget>(
+                              onClosed: (budget) {
+                                _budgetList.add(budget as Budget);
+                                // BudgetService().addToBudgets(budget);
+                                //TODO: Need to implement riverpod state provider to update the budget list
+                                for (var element in _budgetList) {
+                                  print(element.toString());
+                                }
+                              },
+                              transitionDuration: const Duration(seconds: 1),
+                              openBuilder: (context, action) {
+                                return const CreateBudgetPage();
+                              },
+                              closedBuilder: (BuildContext context,
+                                  void Function() action) {
+                                return Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: const Icon(
+                                      Icons.add_outlined,
+                                      size: 30,
+                                    ));
+                              },
                             )
                           ],
                         ),
@@ -215,58 +254,59 @@ class _LandingPageState extends State<LandingPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            //The middle section containing the news feed and search
-                            //functionality for budgets and groups
+                            //The Sub title and seach bar
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 8.0),
+                              child: Text(
+                                "Discover",
+                                style: TextStyle(
+                                    //fontStyle: ,
+                                    letterSpacing: 1.3,
+                                    color: Colors.black,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            const DiscoverNews(),
+                            //The middle section containing the news feed
                             Container(
                               height: MediaQuery.of(context).size.height * 0.3,
                               width: MediaQuery.of(context).size.width * 0.95,
                               decoration: const BoxDecoration(
                                 color: Colors.transparent,
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    child: ShaderMask(
-                                      shaderCallback: (rect) {
-                                        return const LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                            Colors.transparent,
-                                            Colors.white
-                                          ],
-                                          stops: [0.7, 1.0],
-                                        ).createShader(rect);
-                                      },
-                                      blendMode: BlendMode.dstOut,
-                                      child: const NewsFeed(),
-                                    ),
-                                  ),
-                                  //Budget search widget
-                                  Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.45,
-                                      color: Colors.transparent,
-                                      child: const NewsFeedBudgetCard())
-                                ],
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 2.0),
+                                width: MediaQuery.of(context).size.width * 0.95,
+                                child: ShaderMask(
+                                  shaderCallback: (rect) {
+                                    return const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Colors.transparent,
+                                        Colors.white
+                                      ],
+                                      stops: [0.7, 1.0],
+                                    ).createShader(rect);
+                                  },
+                                  blendMode: BlendMode.dstOut,
+                                  child: const NewsFeed(),
+                                ),
                               ),
                             ),
                             //Bottom section to hold the chat history
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                                width: MediaQuery.of(context).size.width * 0.95,
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                ),
-                              ),
-                            )
+                                padding: const EdgeInsets.all(8.0),
+                                child: //Budget search widget
+                                    Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.45,
+                                        color: Colors.transparent,
+                                        child: const NewsFeedBudgetCard()))
                           ],
                         ),
                       )

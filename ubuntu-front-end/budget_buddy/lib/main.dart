@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
       // routerDelegate: _router.routerDelegate,
       // routeInformationParser: _router.routeInformationParser,
       // routeInformationProvider: _router.routeInformationProvider,
+      routes: {"/createBudget": (context) => const CreateBudgetPage()},
       theme: customTheme,
       scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,

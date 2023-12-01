@@ -11,7 +11,7 @@ class NewsApiService {
     Response response = await get(Uri.parse(newsCatcherEndpoint));
 
     if (response.statusCode == 200) {
-      print(response.body.toString());
+      //print(response.body.toString());
       final String result = response.body.toString();
       return result;
 

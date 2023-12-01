@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../models/budget.dart';
+
 class BudgetList extends StatefulWidget {
-  const BudgetList({super.key});
+  final List<Budget> budgetList;
+
+  const BudgetList({super.key, required this.budgetList});
 
   @override
   State<BudgetList> createState() => _BudgetListState();
@@ -19,6 +23,7 @@ class _BudgetListState extends State<BudgetList> {
         SizedBox(
           height: 280,
           child: PageView.builder(
+              itemCount: widget.budgetList.length,
               controller: pageController,
               itemBuilder: (context, index) {
                 return Container(
@@ -37,8 +42,36 @@ class _BudgetListState extends State<BudgetList> {
                     children: [
                       Container(
                         //color: Colors.amber,
-                        height: 70,
-                        child: Stack(),
+                        height: 100,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                widget.budgetList[index].name,
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.2),
+                              ),
+                            ),
+                            Text(
+                              widget.budgetList[index].budgetMotto,
+                              style: const TextStyle(
+                                  fontSize: 10, letterSpacing: 1.2),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 15,
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                decoration: BoxDecoration(
+                                    color: Colors.indigo[300],
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       Container()
                     ],
