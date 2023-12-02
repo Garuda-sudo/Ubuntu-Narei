@@ -24,7 +24,7 @@ class _CreateBudgetPageState extends State<CreateBudgetPage> {
 
   List<String> _spendingCategories = ["Item1", "Item2", "Item3", "Item4"];
 
-  final _globalKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
   final _budget = Budget(
       userId: 1,

@@ -4,6 +4,7 @@ import 'package:budget_buddy/config/scroll_behaviour.dart';
 import 'package:budget_buddy/pages/landing_page/widgets/landing_page.dart';
 import 'package:budget_buddy/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
@@ -16,15 +17,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // routerDelegate: _router.routerDelegate,
-      // routeInformationParser: _router.routeInformationParser,
-      // routeInformationProvider: _router.routeInformationProvider,
-      routes: {"/createBudget": (context) => const CreateBudgetPage()},
-      theme: customTheme,
-      scrollBehavior: MyCustomScrollBehavior(),
-      debugShowCheckedModeBanner: false,
-      home: const MyHomePage(title: 'Budget Buddy'),
+    return Portal(
+      child: MaterialApp(
+        // routerDelegate: _router.routerDelegate,
+        // routeInformationParser: _router.routeInformationParser,
+        // routeInformationProvider: _router.routeInformationProvider,
+        routes: {"/createBudget": (context) => const CreateBudgetPage()},
+        theme: customTheme,
+        scrollBehavior: MyCustomScrollBehavior(),
+        debugShowCheckedModeBanner: false,
+        home: const MyHomePage(title: 'Budget Buddy'),
+      ),
     );
   }
 }

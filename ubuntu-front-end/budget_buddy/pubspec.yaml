@@ -41,6 +41,7 @@ dependencies:
   flutter_riverpod: ^2.4.6
   riverpod_lint: ^2.3.4
   animations: ^2.0.8
+  flutter_portal: ^1.1.4
 
 dev_dependencies:
   flutter_test:
