@@ -58,7 +58,6 @@ class _BudgetListState extends State<BudgetList> {
                     child: Column(
                       children: [
                         Container(
-                          //color: Colors.amber,
                           height: 100,
                           child: Column(
                             children: [
@@ -91,64 +90,61 @@ class _BudgetListState extends State<BudgetList> {
                             ],
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 15.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.amber,
-                                borderRadius: BorderRadius.circular(17),
-                              ),
-                              //Conditional to check whether to add radial menu
-                              child: index == currentPage
-                                  ? PortalTarget(
-                                      visible: isMenuOpen,
-                                      anchor: const Aligned(
-                                        follower: Alignment.topLeft,
-                                        target: Alignment.topRight,
-                                      ),
-                                      portalFollower: Material(
-                                          elevation: 8,
-                                          child: CustomPaint(
-                                            painter: RadialMenuPainter(),
-                                          )),
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(0xFFF5C6373),
-                                        ),
-                                        child: IconButton(
-                                            iconSize: 40,
-                                            icon: Icon(Icons.add),
-                                            color: Colors.white,
-                                            onPressed: () {
-                                              print(
-                                                  "tapped" + index.toString());
-                                              setState(() {
-                                                isMenuOpen = true;
-                                              });
-                                            }),
-                                      ),
-                                    )
-                                  : Container(
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color(0xFFF5C6373),
-                                      ),
-                                      child: IconButton(
-                                          iconSize: 40,
-                                          icon: Icon(Icons.add),
-                                          color: Colors.white,
-                                          onPressed: () {
-                                            print("tapped" + index.toString());
-                                            setState(() {
-                                              isMenuOpen = true;
-                                            });
-                                          }),
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 15.0),
+                          child: index == currentPage
+                              ? PortalTarget(
+                                  visible: isMenuOpen,
+                                  anchor: const Aligned(
+                                    follower: Alignment.center,
+                                    target: Alignment.center,
+                                  ),
+                                  portalFollower: CustomPaint(
+                                    painter: RadialMenuPainter(),
+                                    child: const Stack(
+                                      children: [
+                                        Positioned(
+                                          child: Text("Lets do it!"),
+                                          left: 150,
+                                          top: 300,
+                                        )
+                                      ],
                                     ),
-                            ),
-                          ),
+                                  ),
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFFF5C6373),
+                                    ),
+                                    child: IconButton(
+                                        iconSize: 40,
+                                        icon: Icon(Icons.add),
+                                        color: Colors.white,
+                                        onPressed: () {
+                                          print("tapped" + index.toString());
+                                          setState(() {
+                                            isMenuOpen = true;
+                                          });
+                                        }),
+                                  ),
+                                )
+                              : Container(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xFFF5C6373),
+                                  ),
+                                  child: IconButton(
+                                      iconSize: 40,
+                                      icon: Icon(Icons.add),
+                                      color: Colors.white,
+                                      onPressed: () {
+                                        print("tapped" + index.toString());
+                                        setState(() {
+                                          isMenuOpen = true;
+                                        });
+                                      }),
+                                ),
                         )
                       ],
                     ),
@@ -168,6 +164,6 @@ class _BudgetListState extends State<BudgetList> {
       previousPage--;
     else
       previousPage = 2;
-    print("Previous page: $previousPage");
+    //print("Previous page: $previousPage");
   }
 }
