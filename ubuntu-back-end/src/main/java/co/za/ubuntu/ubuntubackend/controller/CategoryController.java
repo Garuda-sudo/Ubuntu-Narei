@@ -14,7 +14,7 @@ public class CategoryController implements CategoryApi {
      * @return
      */
     @Override
-    public ResponseEntity<Category> _createCategory(Category category) {
+    public ResponseEntity<Category> createCategory(Category category) {
         return null;
     }
 
@@ -23,7 +23,7 @@ public class CategoryController implements CategoryApi {
      * @return
      */
     @Override
-    public ResponseEntity<Void> _deleteCategory(Long id) {
+    public ResponseEntity<Void> deleteCategory(Long id) {
         return null;
     }
 
@@ -32,7 +32,7 @@ public class CategoryController implements CategoryApi {
      * @return
      */
     @Override
-    public ResponseEntity<List<Category>> _getAllCategories(Long userId) {
+    public ResponseEntity<List<Category>> getAllCategories(Long userId) {
         return null;
     }
 
@@ -41,7 +41,7 @@ public class CategoryController implements CategoryApi {
      * @return
      */
     @Override
-    public ResponseEntity<Category> _getCategoryById(Long id) {
+    public ResponseEntity<Category> getCategoryById(Long id) {
         return null;
     }
 
@@ -51,7 +51,7 @@ public class CategoryController implements CategoryApi {
      * @return
      */
     @Override
-    public ResponseEntity<Category> _updateCategory(Long id, Category category) {
+    public ResponseEntity<Category> updateCategory(Long id, Category category) {
         return null;
     }
 }

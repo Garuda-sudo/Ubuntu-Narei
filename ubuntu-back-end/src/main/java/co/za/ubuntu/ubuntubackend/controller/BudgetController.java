@@ -3,23 +3,49 @@ package co.za.ubuntu.ubuntubackend.controller;
 import co.za.ubuntu.api.BudgetApi;
 import co.za.ubuntu.model.Budget;
 import co.za.ubuntu.model.BudgetResponse;
+import co.za.ubuntu.model.Transaction;
+import co.za.ubuntu.model.TransactionResponse;
 import co.za.ubuntu.ubuntubackend.service.BudgetService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 @RestController
-@RequiredArgsConstructor
 public class BudgetController implements BudgetApi {
     private final BudgetService budgetService;
+
+    @Autowired
+    public BudgetController(BudgetService budgetService) {
+        this.budgetService = budgetService;
+    }
+
+    /**
+     *
+     * @param id id of budget to add transaction to (required)
+     * @param transaction Transaction object that needs to be added (optional)
+     * @return
+     */
+    @Override
+    public ResponseEntity<Budget> addTransactionToBudget(Long id, Transaction transaction) {
+
+        budgetService.addTransactionToBudget(id, transaction);
+
+        return null;
+    }
+
     /**
      * @param budget Budget object that needs to be added (optional)
      * @return
      */
     @Override
-    public ResponseEntity<BudgetResponse> _createBudget(Budget budget) {
+    public ResponseEntity<BudgetResponse> createBudget(Budget budget) {
         return ResponseEntity.ok().body(budgetService.createBudget(budget));
     }
 
@@ -28,9 +54,21 @@ public class BudgetController implements BudgetApi {
      * @return
      */
     @Override
-    public ResponseEntity<Void> _deleteBudget(Long id) {
+    public ResponseEntity<Void> deleteBudget(Long id) {
+
+        Logger.getLogger("Budget Logger").log(new LogRecord(Level.ALL, "Deleting Budget %s" + id));
+
         budgetService.deleteBudget(Math.toIntExact(id));
+
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<List<TransactionResponse>> getAllBudgetTransactions(Long budgetId) {
+
+        budgetService.getBudgetTransactions(budgetId);
+
+        return null;
     }
 
     /**
@@ -38,7 +76,7 @@ public class BudgetController implements BudgetApi {
      * @return
      */
     @Override
-    public ResponseEntity<List<BudgetResponse>> _getAllBudgets(Long userId) {
+    public ResponseEntity<List<BudgetResponse>> getAllBudgets(Long userId) {
         return ResponseEntity.ok().body(
                 budgetService.getUserBudgets(Math.toIntExact(userId))
         );
@@ -49,7 +87,7 @@ public class BudgetController implements BudgetApi {
      * @return
      */
     @Override
-    public ResponseEntity<BudgetResponse> _getBudgetById(Long id) {
+    public ResponseEntity<BudgetResponse> getBudgetById(Long id) {
         return ResponseEntity.ok().body(
                 budgetService.getBudget(Math.toIntExact(id))
         );
@@ -61,8 +99,18 @@ public class BudgetController implements BudgetApi {
      * @return
      */
     @Override
-    public ResponseEntity<BudgetResponse> _updateBudget(Long id, Budget budget) {
+    public ResponseEntity<BudgetResponse> updateBudget(Long id, Budget budget) {
         budgetService.updateBudget(budget);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping
+    public ResponseEntity<BudgetResponse> getBudgetReport() {
+        return null;
+    }
+
+    //TODO: Need to add endpoint that adds a budget to an account. The respective accounts *(value) must
+    // then reflect the change based on the transactions. Not quite the value but it must show how many budgets
+    // are linked.
+
 }

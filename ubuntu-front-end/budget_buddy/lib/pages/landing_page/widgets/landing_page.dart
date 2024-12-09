@@ -1,7 +1,7 @@
 import 'dart:js_interop';
 
 import 'package:animations/animations.dart';
-import 'package:budget_buddy/data_providers/budgetDataProvider.dart';
+import 'package:budget_buddy/data_providers/budget_Provider.dart';
 import 'package:budget_buddy/models/budget.dart';
 import 'package:budget_buddy/pages/budgets/budget_carousal_alternate.dart';
 import 'package:budget_buddy/pages/landing_page/widgets/landing_page_graph_component.dart';
@@ -42,8 +42,9 @@ class LandingPage extends ConsumerWidget {
                 data: (data) {
                   List<Budget> budgetList = data.map((e) => e).toList();
                   _budgetList = budgetList;
+                  print(_budgetList);
                   return BudgetList(
-                    budgetList: budgetList,
+                    budgetList: _budgetList,
                   );
                 },
                 error: (err, s) => Text(err.toString()),
@@ -214,6 +215,7 @@ class LandingPage extends ConsumerWidget {
                                 _budgetList.add(budget as Budget);
                                 // BudgetService().addToBudgets(budget);
                                 //TODO: Need to implement riverpod state provider to update the budget list
+                                //Also first check if added budget is null
                                 for (var element in _budgetList) {
                                   print(element.toString());
                                 }

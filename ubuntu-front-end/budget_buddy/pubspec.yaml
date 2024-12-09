@@ -42,6 +42,9 @@ dependencies:
   riverpod_lint: ^2.3.4
   animations: ^2.0.8
   flutter_portal: ^1.1.4
+  animated_radial_menu: ^0.0.1
+  vector_math: ^2.1.4
+  font_awesome_flutter: ^9.2.0
 
 dev_dependencies:
   flutter_test:

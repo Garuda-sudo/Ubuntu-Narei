@@ -3,6 +3,7 @@ package co.za.ubuntu.ubuntubackend.controller;
 import co.za.ubuntu.api.TransactionApi;
 import co.za.ubuntu.model.Transaction;
 import co.za.ubuntu.model.TransactionResponse;
+import co.za.ubuntu.ubuntubackend.service.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,12 +11,19 @@ import java.util.List;
 
 @RestController
 public class TransactionController implements TransactionApi {
+
+    TransactionService transactionService;
+
     /**
      * @param transaction Transaction object that needs to be added (optional)
      * @return
      */
     @Override
-    public ResponseEntity<TransactionResponse> _createTransaction(Transaction transaction) {
+    public ResponseEntity<TransactionResponse> createTransaction(Transaction transaction) {
+
+        //Get the actual budget ID from the transaction object
+        transactionService.createTransaction(1L, transaction);
+
         return null;
     }
 
@@ -24,7 +32,7 @@ public class TransactionController implements TransactionApi {
      * @return
      */
     @Override
-    public ResponseEntity<Void> _deleteTransaction(Long id) {
+    public ResponseEntity<Void> deleteTransaction(Long id) {
         return null;
     }
 
@@ -33,7 +41,7 @@ public class TransactionController implements TransactionApi {
      * @return
      */
     @Override
-    public ResponseEntity<List<TransactionResponse>> _getAllTransactions(Long userId) {
+    public ResponseEntity<List<TransactionResponse>> getAllTransactions(Long userId) {
         return null;
     }
 
@@ -42,7 +50,7 @@ public class TransactionController implements TransactionApi {
      * @return
      */
     @Override
-    public ResponseEntity<TransactionResponse> _getTransactionById(Long id) {
+    public ResponseEntity<TransactionResponse> getTransactionById(Long id) {
         return null;
     }
 
@@ -52,7 +60,13 @@ public class TransactionController implements TransactionApi {
      * @return
      */
     @Override
-    public ResponseEntity<TransactionResponse> _updateTransaction(Long id, Transaction transaction) {
+    public ResponseEntity<TransactionResponse> updateTransaction(Long id, Transaction transaction) {
         return null;
     }
+
+    /**
+     * @param id          id of transaction to update (required)
+     * @param transaction Transaction object that needs to be updated (optional)
+     */
+    //End point to add transaction to a budget
 }

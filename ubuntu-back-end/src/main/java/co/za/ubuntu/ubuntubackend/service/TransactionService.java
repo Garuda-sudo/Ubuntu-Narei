@@ -21,7 +21,7 @@ public interface TransactionService {
      * @param transaction The transaction object to create.
      * @return The created transaction response.
      */
-    TransactionResponse createTransaction(Transaction transaction);
+    TransactionResponse createTransaction(Long budgetId, Transaction transaction);
 
     /**
      * Deletes a transaction by its unique identifier.
@@ -36,7 +36,7 @@ public interface TransactionService {
      * @param userId The unique identifier of the user.
      * @return A list of transaction responses associated with the user.
      */
-    List<TransactionResponse> getAllTransactions(Long userId);
+    List<TransactionResponse> getAllUserTransactions(Long userId);
 
     /**
      * Retrieves a transaction by its unique identifier.

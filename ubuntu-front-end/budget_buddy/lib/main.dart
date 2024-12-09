@@ -124,6 +124,10 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.newspaper),
               label: 'Financial News',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.newspaper),
+              label: 'Tax Info',
+            ),
           ],
         ));
   }

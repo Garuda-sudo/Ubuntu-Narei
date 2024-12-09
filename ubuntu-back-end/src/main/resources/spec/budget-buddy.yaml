@@ -125,6 +125,55 @@ paths:
         '404':
           description:
             Not Found
+  /budget/{id}/transaction:
+    post:
+      tags:
+        - budgetTransaction
+      summary: Add a transaction to a budget
+      operationId: addTransactionToBudget
+      parameters:
+        - name: id
+          in: path
+          description: id of budget to add transaction to
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Budget object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Budget'
+    get:
+      tags:
+        - getAllBudgetTransactions
+      summary: Get all transaction in a budget
+      operationId: getAllBudgetTransactions
+      parameters:
+        - name: id
+          in: path
+          description: id of budget to get transactions from
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionResponse'
   /category:
     get:
       tags:
@@ -349,6 +398,48 @@ paths:
         '404':
           description:
             Not Found
+  /user:
+    get:
+      tags:
+        - user
+      summary: Retrieve an user
+      operationId: getUser
+      parameters:
+        - name: userId
+          in: header
+          description: id of user to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /account:
+    get:
+      tags:
+        - account
+      summary: Retrieve an user
+      operationId: getAccount
+      parameters:
+        - name: userId
+          in: header
+          description: id of user to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
 components:
   schemas:
     Budget:
@@ -373,6 +464,14 @@ components:
           type: string
           format:
             date-time
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Account'
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
     BudgetResponse:
       type: object
       properties:
@@ -441,6 +540,20 @@ components:
           $ref: '#/components/schemas/Category'
         userId:
           type: integer
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
     PeriodType:
       type: string
       enum:
@@ -448,3 +561,23 @@ components:
         - MONTHLY
         - YEARLY
         - ONETIME
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        balance:
+          type: number
+          format: double
+        institution:
+          type: string
+        dateCreated:
+          type: string
+          format: date-time
+        budgets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Budget'

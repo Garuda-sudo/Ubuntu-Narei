@@ -1,4 +1,4 @@
--- Create schema if not exists
+acc-- Create schema if not exists
 
 CREATE SCHEMA IF NOT EXISTS budgetbuddy;
 

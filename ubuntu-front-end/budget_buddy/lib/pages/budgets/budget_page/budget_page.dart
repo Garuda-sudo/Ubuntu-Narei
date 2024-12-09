@@ -19,10 +19,6 @@ class _BudgetPageState extends State<BudgetPage> {
             child: const Text('Total Budget for June'),
           ),
           Container(
-            height: 50,
-            color: Colors.green,
-          ),
-          Container(
             height: 250,
             color: Colors.white,
             child: const Center(child: Text('Budget chart widget goes here')),

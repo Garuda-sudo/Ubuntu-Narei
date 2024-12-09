@@ -1,17 +1,19 @@
 package co.za.ubuntu.ubuntubackend.persistence.entity;
 
+import co.za.ubuntu.model.Category;
+import co.za.ubuntu.model.Transaction;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-@Getter
-@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "budget", schema = "budgetbuddy")
 public class BudgetEntity {
@@ -19,6 +21,10 @@ public class BudgetEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
+//    @NotNull
+//    @Column(name = "budget_income", nullable = false, precision = 9, scale = 2)
+//    private BigDecimal budgetIncome;
 
     @Size(max = 50)
     @NotNull
@@ -44,15 +50,126 @@ public class BudgetEntity {
 
     @NotNull
     @Column(name = "date_created", nullable = false)
-    private Instant dateCreated;
+    private Date dateCreated;
 
     @NotNull
     @Column(name = "date_updated", nullable = false)
-    private Instant dateUpdated;
+    private Date dateUpdated;
+
+//    @NotNull
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private UserEntity userEntity;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity userEntity;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "account_budget",
+        joinColumns = { @JoinColumn(name = "budget_id") },
+        inverseJoinColumns = { @JoinColumn(name = "account_id") }
+    )
+    private Set<AccountEntity> accounts = new HashSet<>();
 
+    @OneToMany()
+    @JoinColumn(name = "category")
+    private CategoryEntity category;
+
+    @OneToMany(mappedBy = "budget")
+    private Set<TransactionEntity> transactions = new HashSet<>();
+
+    public Set<AccountEntity> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Set<AccountEntity> accounts) {
+        this.accounts = accounts;
+    }
+
+    //    public CategoryEntity getCategory() {
+//        return category;
+//    }
+//
+//    public void setCategory(CategoryEntity category) {
+//        this.category = category;
+//    }
+
+    public Set<TransactionEntity> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<TransactionEntity> transactions) {
+        this.transactions = transactions;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getBudgetName() {
+        return budgetName;
+    }
+
+    public void setBudgetName(String budgetName) {
+        this.budgetName = budgetName;
+    }
+
+//    public BigDecimal getBudgetIncome() {
+//        return budgetIncome;
+//    }
+//
+//    public void setBudgetIncome(BigDecimal budgetIncome) {
+//        this.budgetIncome = budgetIncome;
+//    }
+
+    public BigDecimal getAmountLimit() {
+        return amountLimit;
+    }
+
+    public void setAmountLimit(BigDecimal amountLimit) {
+        this.amountLimit = amountLimit;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getPeriodType() {
+        return periodType;
+    }
+
+    public void setPeriodType(String periodType) {
+        this.periodType = periodType;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateUpdated() {
+        return dateUpdated;
+    }
+
+    public void setDateUpdated(Date dateUpdated) {
+        this.dateUpdated = dateUpdated;
+    }
 }
