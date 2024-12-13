@@ -70,9 +70,16 @@ public class BudgetEntity {
     )
     private Set<AccountEntity> accounts = new HashSet<>();
 
-    @OneToMany()
-    @JoinColumn(name = "category")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "budget_category",
+        joinColumns = { @JoinColumn(name = "category_id") },
+        inverseJoinColumns = { @JoinColumn(name = "budget_id") }
+    )
     private CategoryEntity category;
+
+    @OneToMany(mappedBy = "budget", fetch = FetchType.LAZY)
+    private BudgetIncomeSplitEntity budgetIncomeSplitEntity;
 
     @OneToMany(mappedBy = "budget")
     private Set<TransactionEntity> transactions = new HashSet<>();
@@ -85,13 +92,13 @@ public class BudgetEntity {
         this.accounts = accounts;
     }
 
-    //    public CategoryEntity getCategory() {
-//        return category;
-//    }
-//
-//    public void setCategory(CategoryEntity category) {
-//        this.category = category;
-//    }
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEntity category) {
+        this.category = category;
+    }
 
     public Set<TransactionEntity> getTransactions() {
         return transactions;
@@ -171,5 +178,13 @@ public class BudgetEntity {
 
     public void setDateUpdated(Date dateUpdated) {
         this.dateUpdated = dateUpdated;
+    }
+
+    public BudgetIncomeSplitEntity getBudgetIncomeSplitEntity() {
+        return budgetIncomeSplitEntity;
+    }
+
+    public void setBudgetIncomeSplitEntity(BudgetIncomeSplitEntity budgetIncomeSplitEntity) {
+        this.budgetIncomeSplitEntity = budgetIncomeSplitEntity;
     }
 }

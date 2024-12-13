@@ -13,6 +13,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "category", schema = "budgetbuddy")
 public class CategoryEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

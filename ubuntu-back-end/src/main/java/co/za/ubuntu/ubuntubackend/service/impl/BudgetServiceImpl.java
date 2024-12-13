@@ -87,9 +87,23 @@ public class BudgetServiceImpl implements BudgetService {
     @Transactional
     public BudgetResponse createBudget(Budget budget) {
 
+        //What is the purpose of a budget. A budget needs to give someone the ability to plan
+        //their financial plan over a set period of time. This financial plan allows them to
+        //take their monthly income and allocate it to expected expense categories and then track
+        //throughout the planned period how much they have used from each category.
+
+        //When creating a budget, we need the total amount from the income they have allocated to it.
+        //We then want to split up the income allocated to firstly the bills category. The front end
+        //makes the UI where it takes the user through the flow. The next category will be investments.
+        //Thirdly any debt they would like to tackle. Something they would like to save toward, like a
+        //short term goal. Lastly, the entertainment categories for what the user would like to spend on.
+
+        //We need to get which user is creating the budget
         var user = userRepository.findById(budget.getUserId()).orElseThrow();
 
-        //TODO: Get the accounts linked to this budget as well
+        //We then need to see which accounts they are linking to this budget. The front end should calculate
+        //how much from each account they would like to use and the back end should receive in the DTO how
+        //the split is.
         Set<AccountEntity> userAccounts =
             accountRepository.findByUserId(budget.getAccounts().stream().map(account -> account.getId().intValue()).collect(Collectors.toList()));;
 
