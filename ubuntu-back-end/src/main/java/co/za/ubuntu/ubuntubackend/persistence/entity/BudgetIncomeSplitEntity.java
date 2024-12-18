@@ -23,12 +23,12 @@ public class BudgetIncomeSplitEntity {
     @Column(name = "split_type")
     private String splitType;
     @Column(name = "allocation_percentage")
-    private BigDecimal allocationAdvantage;
+    private BigDecimal allocationPercentage;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "budget_id", nullable = false)
     private BudgetEntity budget;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
-    private Account account;
+    @JoinColumn(name = "account_id", nullable = false, unique = true)
+    private AccountEntity account;
 
 }

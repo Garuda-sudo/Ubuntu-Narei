@@ -50,6 +50,9 @@ public class AccountEntity {
     @ManyToMany(mappedBy = "accounts")
     private Set<BudgetEntity> budgets = new HashSet<>();
 
+    @OneToOne(mappedBy = "account")
+    private BudgetIncomeSplitEntity budgetIncomeSplit;
+
     public Integer getId() {
         return id;
     }
