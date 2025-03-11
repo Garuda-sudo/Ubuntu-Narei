@@ -3,6 +3,7 @@ package co.za.ubuntu.ubuntubackend.service.impl;
 import co.za.ubuntu.ubuntubackend.domain.Room;
 import co.za.ubuntu.ubuntubackend.domain.RoomRequest;
 import co.za.ubuntu.ubuntubackend.domain.enums.RoomType;
+import co.za.ubuntu.ubuntubackend.dto.BudgetDTO;
 import co.za.ubuntu.ubuntubackend.service.RoomService;
 import co.za.ubuntu.ubuntubackend.service.RoomStrategy;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room createRoom(RoomRequest roomRequest, RoomType roomType) {
+    public Room createRoom(BudgetDTO roomRequest, RoomType roomType) {
 
         // TODO: A room is a special entity that is for the use of joint budgeting. It is to enable
         // multiple users to create a shared goal that facilitates their savings goal by seeing each

@@ -4,6 +4,7 @@ import co.za.ubuntu.model.User;
 import co.za.ubuntu.ubuntubackend.domain.Room;
 import co.za.ubuntu.ubuntubackend.domain.RoomRequest;
 import co.za.ubuntu.ubuntubackend.domain.enums.RoomType;
+import co.za.ubuntu.ubuntubackend.dto.BudgetDTO;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface RoomService {
 
     Room getRoom(Integer id);
 
-    Room createRoom(RoomRequest roomRequest, RoomType roomType);
+    Room createRoom(BudgetDTO roomRequest, RoomType roomType);
 
     Room editRoom(RoomRequest roomRequest, RoomType roomType);
 

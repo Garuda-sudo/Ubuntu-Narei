@@ -1,22 +1,25 @@
 package co.za.ubuntu.ubuntubackend.service.impl;
 
 import co.za.ubuntu.model.*;
+import co.za.ubuntu.ubuntubackend.domain.enums.GoalType;
 import co.za.ubuntu.ubuntubackend.domain.exception.NotFoundException;
-import co.za.ubuntu.ubuntubackend.persistence.entity.AccountEntity;
-import co.za.ubuntu.ubuntubackend.persistence.entity.BudgetEntity;
-import co.za.ubuntu.ubuntubackend.persistence.entity.TransactionEntity;
-import co.za.ubuntu.ubuntubackend.persistence.repository.AccountRepository;
-import co.za.ubuntu.ubuntubackend.persistence.repository.BudgetRepository;
-import co.za.ubuntu.ubuntubackend.persistence.repository.TransactionRepository;
-import co.za.ubuntu.ubuntubackend.persistence.repository.UserRepository;
+import co.za.ubuntu.ubuntubackend.dto.AccountSplitDTO;
+import co.za.ubuntu.ubuntubackend.dto.BudgetDTO;
+import co.za.ubuntu.ubuntubackend.dto.BudgetIncomeSplitDTO;
+import co.za.ubuntu.ubuntubackend.persistence.entity.*;
+import co.za.ubuntu.ubuntubackend.persistence.repository.*;
 import co.za.ubuntu.ubuntubackend.service.BudgetService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,12 @@ public class BudgetServiceImpl implements BudgetService {
     TransactionRepository transactionRepository;
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    BudgetIncomeSplitRepository budgetIncomeSplitRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
+    @Autowired
+    GoalRepository goalRepository;
 
     /**
      * @param accountId The unique identifier of the user.
@@ -85,7 +94,7 @@ public class BudgetServiceImpl implements BudgetService {
      */
     @Override
     @Transactional
-    public BudgetResponse createBudget(Budget budget) {
+    public BudgetResponse createBudget(BudgetDTO budget) {
 
         //What is the purpose of a budget. A budget needs to give someone the ability to plan
         //their financial plan over a set period of time. This financial plan allows them to
@@ -98,18 +107,159 @@ public class BudgetServiceImpl implements BudgetService {
         //Thirdly any debt they would like to tackle. Something they would like to save toward, like a
         //short term goal. Lastly, the entertainment categories for what the user would like to spend on.
 
+
+
+        //Create the budget
+        BudgetEntity budgetEntity = new BudgetEntity();
+
+        if (budget.getStartDate().isAfter(budget.getEndDate())) {
+            try {
+                throw new Exception("Start date must be before end date");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //TODO: Refactor all this to the dtoToDomain method
+        budgetEntity.setBudgetName(budget.getName());
+        budgetEntity.setAmountLimit(BigDecimal.valueOf(budget.getAmountLimit()));
+        budgetEntity.setDateCreated(Date.from(Instant.now()));
+        budgetEntity.setStartDate(budget.getStartDate());
+        budgetEntity.setEndDate(budget.getEndDate());
+        budgetEntity.setStatus(true);
+
+
         //We need to get which user is creating the budget
-        var user = userRepository.findById(budget.getUserId()).orElseThrow();
+        UserEntity user = userRepository.findById(budget.getUserId()).orElseThrow();
+        budgetEntity.setUserEntity(user);
+
+        //========================== Set the Budget Income Split =============================================//
 
         //We then need to see which accounts they are linking to this budget. The front end should calculate
         //how much from each account they would like to use and the back end should receive in the DTO how
-        //the split is.
-        Set<AccountEntity> userAccounts =
-            accountRepository.findByUserId(budget.getAccounts().stream().map(account -> account.getId().intValue()).collect(Collectors.toList()));;
+        //the split is. The budget will link to income split entities that reflect how much of an account is
+        //funding the respective budget. An account can have multiple income sources within it each with its
+        //own respective allocation amount & percentage.
+        List<AccountSplitDTO> accountSplitDTOS = budget.getBudgetIncomeSplit().getAccounts();
 
-        budget.setAccounts(userAccounts.stream().map(this::domainToDTO).collect(Collectors.toList()));
+        List<AccountEntity> accounts =
+            accountRepository.findAllById(accountSplitDTOS.stream().map(AccountSplitDTO::getAccountId).collect(Collectors.toList()));
 
-        var savedBudget = budgetRepository.save(dtoToDomain(budget));
+        //Create a map of the account ID and the respective account entity
+        Map<Integer, AccountEntity> accountMap = new HashMap<>();
+        accounts.forEach(
+            accountEntity -> accountMap.put(accountEntity.getId(), accountEntity)
+        );
+
+        List<BudgetIncomeSplitEntity> budgetIncomeSplitEntities = new ArrayList<>();
+
+        accountSplitDTOS.forEach(
+            //Create each income budget split entity
+            accountSplitDTO -> {
+                BudgetIncomeSplitEntity budgetIncomeSplitEntity = new BudgetIncomeSplitEntity();
+
+                if (accountMap.containsKey(accountSplitDTO.getAccountId())) {
+                    budgetIncomeSplitEntity.setAccount(accountMap.get(accountSplitDTO.getAccountId()));
+                    budgetIncomeSplitEntity.setSplitType();
+                    budgetIncomeSplitEntity.setIncomeAmount();
+                } else {
+                    throw new RuntimeException(
+                        "User not linked to given Account ID");
+                }
+
+                budgetIncomeSplitEntities.add(budgetIncomeSplitEntity);
+            }
+        );
+
+        budgetEntity.setBudgetIncomeSplitEntity(budgetIncomeSplitEntities);
+
+        //========================== Set the Long Term Goal =============================================//
+
+        //A Goal is the holistic and micro reason why a user will save towards something. A holistic
+        //goal is when a user takes multiple budgets to save towards something. A micro goal is when
+        //a user attaches it to a budget line item and once they actively make progress towards it
+        //throughout the month, they will get discount codes. For joint budgeting, when a group budgets
+        //to spend a total amount, the discounts will be higher based on how much the total group
+        //budgets towards. Once they get to a pre-allocated amount in spending and have the goal set
+        //a coupon will be given to be used at partnered stores.
+
+        List<GoalEntity> longTermGoals = new ArrayList<>(goalRepository.findAllById(budget.getLongTermGoalIds().stream().filter(Objects::nonNull).collect(Collectors.toList())));
+
+        budget.getLongTermGoals().forEach(
+            longTermGoalDTO -> {
+
+                if (longTermGoals.stream().noneMatch(goal -> goal.getName().equals(longTermGoalDTO.getGoalName()))) {
+                    GoalEntity goalEntity =  new GoalEntity();
+                    goalEntity.setGoalType(GoalType.LONG_TERM);
+                    goalEntity.setName(longTermGoalDTO.getGoalName());
+                    goalEntity.setTargetAmount(longTermGoalDTO.getTargetAmount());
+                    goalEntity.setTargetDate(longTermGoalDTO.getTargetDate());
+                    goalEntity.setDescription(longTermGoalDTO.getDescription());
+
+                    longTermGoals.add(goalEntity);
+                } else {
+                    throw new RuntimeException("Cant have more than one Goal of the same name");
+                }
+
+            }
+        );
+
+        budgetEntity.setLongTermGoals(longTermGoals);
+
+        //======================= Set the Category Line Expense & Short Term Goals =============//
+
+        /**
+         * This is where we set each category line item sent from the front end how much the user
+         * wants to spend per category for the specified budget period.
+         */
+
+        List<BudgetCategoryEntity> budgetCategoryEntities = new ArrayList<>();
+
+        budget.getCategoryDTO().forEach(
+            categoryDTO -> {
+                BudgetCategoryEntity budgetCategoryEntity = new BudgetCategoryEntity();
+                CategoryEntity categoryEntity;
+
+                //Check for preset or custom category
+                if (categoryDTO.getCategoryId() != null) {
+                    categoryEntity = categoryRepository.findById(categoryDTO.getCategoryId())
+                        .orElseThrow(() -> new RuntimeException("Category not Found"));
+                } else {
+                    categoryEntity = new CategoryEntity();
+                    categoryEntity.setUserEntity(user);
+                    categoryEntity.setName(categoryDTO.getCategoryName());
+                    categoryEntity.setDateCreated(Instant.from(LocalDate.now()));
+                    categoryEntity.setPriorityLevel(categoryDTO.getPriorityLevel());
+                }
+
+                budgetCategoryEntity.setCategory(categoryEntity);
+                budgetCategoryEntity.setBudget(budgetEntity);
+                budgetCategoryEntity.setAllocatedAmount(categoryDTO.getTotalAmount());
+                budgetCategoryEntity.setActualSpent(new BigDecimal("0.0"));
+                budgetCategoryEntity.setNotes(categoryDTO.getNotes());
+                budgetCategoryEntity.setPriorityLevel(categoryDTO.getPriorityLevel());
+
+                //Set short-term goals for each category
+                GoalEntity shortTermGoal = new GoalEntity();
+
+                shortTermGoal.setGoalType(GoalType.SHORT_TERM);
+                shortTermGoal.setTriggerPercentage(categoryDTO.getShortTermGoalDTO().getTriggerAmount());
+
+                budgetCategoryEntity.setShortTermGoal(shortTermGoal);
+
+                budgetCategoryEntities.add(budgetCategoryEntity);
+            }
+        );
+
+        budgetEntity.setBudgetCategories(new HashSet<>(budgetCategoryEntities));
+
+        //========================== Set the Budget rollover settings ============================//
+        if (budget.getAutoRollover() != null && budget.getRolloverType() != null) {
+            budgetEntity.setAutoRollover(true);
+            budgetEntity.setRolloverType(budget.getRolloverType());
+        }
+
+        var savedBudget = budgetRepository.save(budgetEntity);
 
         //map entity to DTO
         BudgetResponse budgetResponse = new BudgetResponse();
@@ -187,33 +337,38 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    @Transactional
-    public void linkBudgetToAccount(Long budgetId, Long accountId) {
+    public void updateBudgetIncomeSplit(BudgetIncomeSplitDTO budgetIncomeSplitDTO) {
 
-        //get account
-        AccountEntity accountEntity = accountRepository.findById(Math.toIntExact(accountId))
-            .orElseThrow(
-                () -> new NotFoundException("No account found with id: " + accountId)
-            );
+        //Link each budget passed to the accounts funding the budget
+        if (budgetIncomeSplitDTO.getBudgetId() != null && !budgetIncomeSplitDTO.getAccounts().isEmpty()) {
 
-        //Get budget
-        BudgetEntity budgetEntity = budgetRepository.findById(Math.toIntExact(budgetId))
-            .orElseThrow(
-                () -> new NotFoundException("No budget found with id: " + budgetId)
-            );
+            //Return all accounts linked to a budget and their respective splits
+            List<BudgetIncomeSplitEntity> budgetIncomeSplitEntities =
+                budgetIncomeSplitRepository.findByBudgetId(budgetIncomeSplitDTO.getBudgetId().longValue()).orElseThrow();
 
-        //Converting domain to DTO object
-        Account account = new Account();
-        //account.setId(accountEntity.getId().longValue());;
-        //Bidirectional relationship so the budget must be added to the account as well
-        account.setBudgets(accountEntity.getBudgets().stream().map(
-                this::domainToDTO
-        ).collect(Collectors.toList()));
-        //account.setBalance(accountEntity.getBalance());
-        //TODO: Budget to accounts are a many-to-many relationship now. Need to update the DTO
-        //budget.setAccount(account);
+            Set<Long> accountIdsToUpdate = budgetIncomeSplitDTO.getAccounts().stream()
+                .map(accountSplitDTO -> accountSplitDTO.getAccountId().longValue())
+                .collect(Collectors.toSet());
 
-        accountRepository.save(accountEntity);
+            Set<BudgetIncomeSplitEntity> updatedBudgetIncomeSplits = budgetIncomeSplitEntities.stream()
+                .filter(
+                    budgetIncomeSplitEntity ->  accountIdsToUpdate.contains(budgetIncomeSplitEntity.getAccount().getId().longValue())
+                ).peek(budgetIncomeSplitEntity -> {
+                    budgetIncomeSplitDTO.getAccounts().stream()
+                        .filter(accountSplitDTO -> Objects.equals(accountSplitDTO.getAccountId(), budgetIncomeSplitEntity.getAccount().getId()))
+                        .findFirst()
+                        .ifPresent(accountSplitDTO -> {
+                            budgetIncomeSplitEntity.setSplitType(accountSplitDTO.getSplitType());
+                            budgetIncomeSplitEntity.setIncomeAmount(accountSplitDTO.getIncomeAmount());
+                            budgetIncomeSplitEntity.setAllocationPercentage(accountSplitDTO.getAllocationPercentage());
+                        });
+                })
+                .collect(Collectors.toSet());
+
+            budgetIncomeSplitRepository.saveAll(updatedBudgetIncomeSplits);
+
+        }
+
     }
 
     @Override

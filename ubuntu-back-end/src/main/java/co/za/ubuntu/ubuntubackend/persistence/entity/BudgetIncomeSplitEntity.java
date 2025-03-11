@@ -27,8 +27,55 @@ public class BudgetIncomeSplitEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "budget_id", nullable = false)
     private BudgetEntity budget;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
     private AccountEntity account;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Double getIncomeAmount() {
+        return incomeAmount;
+    }
+
+    public void setIncomeAmount(Double incomeAmount) {
+        this.incomeAmount = incomeAmount;
+    }
+
+    public String getSplitType() {
+        return splitType;
+    }
+
+    public void setSplitType(String splitType) {
+        this.splitType = splitType;
+    }
+
+    public BigDecimal getAllocationPercentage() {
+        return allocationPercentage;
+    }
+
+    public void setAllocationPercentage(BigDecimal allocationPercentage) {
+        this.allocationPercentage = allocationPercentage;
+    }
+
+    public BudgetEntity getBudget() {
+        return budget;
+    }
+
+    public void setBudget(BudgetEntity budget) {
+        this.budget = budget;
+    }
+
+    public AccountEntity getAccount() {
+        return account;
+    }
+
+    public void setAccount(AccountEntity account) {
+        this.account = account;
+    }
 }

@@ -3,6 +3,7 @@ package co.za.ubuntu.ubuntubackend.service.impl.RoomStrategyImpl;
 import co.za.ubuntu.ubuntubackend.domain.Room;
 import co.za.ubuntu.ubuntubackend.domain.RoomRequest;
 import co.za.ubuntu.ubuntubackend.domain.enums.RoomType;
+import co.za.ubuntu.ubuntubackend.dto.BudgetDTO;
 import co.za.ubuntu.ubuntubackend.persistence.entity.BudgetEntity;
 import co.za.ubuntu.ubuntubackend.persistence.entity.RoomEntity;
 import co.za.ubuntu.ubuntubackend.persistence.repository.BudgetRepository;
@@ -35,7 +36,7 @@ public class GroupBudgetServiceImpl implements RoomStrategy {
      * @return
      */
     @Override
-    public Room createRoomStrategy(RoomRequest roomRequest) {
+    public Room createRoomStrategy(BudgetDTO roomRequest) {
 
         //Should there be any logic done before creating a Group Budget Room?
         roomRepository.save(dtoToDomain(roomRequest));
@@ -60,23 +61,23 @@ public class GroupBudgetServiceImpl implements RoomStrategy {
         return RoomType.GOAL_BUDGET;
     }
 
-    private RoomEntity dtoToDomain(RoomRequest roomRequest) {
+    private RoomEntity dtoToDomain(BudgetDTO roomRequest) {
 
         // Fetch each users budget that they want to compare and link them to the room
-        List<BudgetEntity> userBudgets = budgetRepository.findAllById(roomRequest.getBudgetIds());
+        //List<BudgetEntity> userBudgets = budgetRepository.findAllById(roomRequest.getBudgetIds());
 
         RoomEntity roomEntity = new RoomEntity();
         roomEntity.setStartDate(Date.from(Instant.now())); //LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault())
-        roomEntity.setGroupGoal(BigDecimal.valueOf(roomRequest.getGroupGoal()));
-        roomEntity.setRoomName(roomRequest.getRoomName());
+        //roomEntity.setGroupGoal(BigDecimal.valueOf(roomRequest.getGroupGoal()));
+        //roomEntity.setRoomName(roomRequest.getRoomName());
 
         //The Join table on users and rooms will have a field on the cumulative savings
         //roomEntity.setUsers(new HashSet<>()); //TODO: Implement adding users
 
         //The big mapping will be that of the budgets linked to this Room
-        if (!userBudgets.isEmpty()) {
-            roomEntity.setBudgets(new HashSet<>(userBudgets));
-        }
+//        if (!userBudgets.isEmpty()) {
+//            roomEntity.setBudgets(new HashSet<>(userBudgets));
+//        }
 
         return roomEntity;
     }

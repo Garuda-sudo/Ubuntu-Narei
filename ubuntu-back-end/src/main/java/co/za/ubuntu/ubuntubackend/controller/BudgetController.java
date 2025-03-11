@@ -5,11 +5,17 @@ import co.za.ubuntu.model.Budget;
 import co.za.ubuntu.model.BudgetResponse;
 import co.za.ubuntu.model.Transaction;
 import co.za.ubuntu.model.TransactionResponse;
+import co.za.ubuntu.ubuntubackend.domain.BudgetIncomeSplit;
+import co.za.ubuntu.ubuntubackend.dto.BudgetDTO;
+import co.za.ubuntu.ubuntubackend.dto.BudgetIncomeSplitDTO;
+import co.za.ubuntu.ubuntubackend.persistence.entity.BudgetEntity;
 import co.za.ubuntu.ubuntubackend.service.BudgetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -46,7 +52,8 @@ public class BudgetController implements BudgetApi {
      */
     @Override
     public ResponseEntity<BudgetResponse> createBudget(Budget budget) {
-        return ResponseEntity.ok().body(budgetService.createBudget(budget));
+        BudgetDTO budgetDTO = new BudgetDTO();
+        return ResponseEntity.ok().body(budgetService.createBudget(budgetDTO));
     }
 
     /**
@@ -102,6 +109,17 @@ public class BudgetController implements BudgetApi {
     public ResponseEntity<BudgetResponse> updateBudget(Long id, Budget budget) {
         budgetService.updateBudget(budget);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/update-budget-income-split")
+    public ResponseEntity<BudgetResponse> updateBudgetIncomeSplit(@RequestBody BudgetIncomeSplitDTO budgetIncomeSplitDTO) {
+
+        //Method that updates a budget's income split. A budget is linked to potentially multiple
+        //accounts. I want an account to represent any split of income, be it a cheque account, savings
+        //or a side income.
+        budgetService.updateBudgetIncomeSplit(budgetIncomeSplitDTO);
+
+        return null;
     }
 
     @GetMapping

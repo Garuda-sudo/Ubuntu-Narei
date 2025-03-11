@@ -1,16 +1,25 @@
 package co.za.ubuntu.ubuntubackend.persistence.entity;
 
+import co.za.ubuntu.ubuntubackend.domain.enums.TransactionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 /**
- * A Transaction encompasses all income and expenses for an individual.
- * This will make it easier to add multiple instances of each category
- * for e.g. 2 salaries will reflect as 2 positive transactions.
+ * A transaction will only be associated to 1 account even though an account
+ * may fund multiple budgets. When a user adds a transaction to a budget that
+ * is funded by 2 accounts, a popup will be displayed to ask which account
+ * the transaction will be debited to. Analysis will then display how each
+ * account has funded the respective budgets they are linked to.
+ *
+ * A transaction will be linked to a single category that the user will choose
+ *
+ * A transaction will only be associated to a single budget, and a budget may
+ * be associated with many transactions.
  */
 @Entity
 @Table(name = "transaction", schema = "budgetbuddy")
@@ -38,28 +47,33 @@ public class TransactionEntity {
     @Column(name = "date", nullable = false)
     private Instant date;
 
-    @NotNull
-    @Column(name = "date_created", nullable = false)
-    private Instant dateCreated;
+    @Column(nullable = false)
+    private LocalDate transactionDate;
+
+    @Column(nullable = false)
+    private String description;
 
     @NotNull
     @Column(name = "date_updated", nullable = false)
     private Instant dateUpdated;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "budget_category_id", nullable = false)
+    private BudgetCategoryEntity budgetCategory;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TransactionType transactionType;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
-    private CategoryEntity categoryEntity;
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity userEntity;
 
-//    @NotNull
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private UserEntity userEntity;
-
-//    @NotNull
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "account_id", nullable = false)
-//    private AccountEntity accountEntity;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "account_id", nullable = false)
+    private AccountEntity account;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "budget_id", nullable = false)
@@ -113,14 +127,6 @@ public class TransactionEntity {
         this.date = date;
     }
 
-    public Instant getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Instant dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
     public Instant getDateUpdated() {
         return dateUpdated;
     }
@@ -129,20 +135,55 @@ public class TransactionEntity {
         this.dateUpdated = dateUpdated;
     }
 
-    public CategoryEntity getCategoryEntity() {
-        return categoryEntity;
+    public AccountEntity getAccount() {
+        return account;
     }
 
-    public void setCategoryEntity(CategoryEntity categoryEntity) {
-        this.categoryEntity = categoryEntity;
+    public void setAccount(AccountEntity account) {
+        this.account = account;
     }
 
+    public BudgetEntity getBudget() {
+        return budget;
+    }
 
-//    public AccountEntity getAccountEntity() {
-//        return accountEntity;
-//    }
-//
-//    public void setAccountEntity(AccountEntity accountEntity) {
-//        this.accountEntity = accountEntity;
-//    }
+    public LocalDate getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(LocalDate transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BudgetCategoryEntity getBudgetCategory() {
+        return budgetCategory;
+    }
+
+    public void setBudgetCategory(BudgetCategoryEntity budgetCategory) {
+        this.budgetCategory = budgetCategory;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
 }

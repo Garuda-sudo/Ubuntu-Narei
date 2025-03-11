@@ -1,7 +1,8 @@
 package co.za.ubuntu.ubuntubackend.service;
 
 import co.za.ubuntu.model.*;
-import org.springframework.stereotype.Service;
+import co.za.ubuntu.ubuntubackend.dto.BudgetDTO;
+import co.za.ubuntu.ubuntubackend.dto.BudgetIncomeSplitDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -38,7 +39,7 @@ public interface BudgetService {
      *
      * @param budget The budget object to create.
      */
-    BudgetResponse createBudget(Budget budget);
+    BudgetResponse createBudget(BudgetDTO budget);
 
     /**
      * Updates an existing budget.
@@ -63,12 +64,7 @@ public interface BudgetService {
 
     List<TransactionResponse> getBudgetTransactions(Long budgetId);
 
-    /**
-     * When a budget needs to be linked to an account
-     * @param budgetId
-     * @param accountId
-     */
-    void linkBudgetToAccount(Long budgetId, Long accountId);
+    void  updateBudgetIncomeSplit(BudgetIncomeSplitDTO budgetIncomeSplitDTO);
 
     /**
      * This will allow an user to directly use funds they have allocated to their various budget

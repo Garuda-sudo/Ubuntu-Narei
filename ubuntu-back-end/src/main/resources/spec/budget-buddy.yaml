@@ -572,6 +572,9 @@ components:
         balance:
           type: number
           format: double
+        budgetIncome:
+          type: number
+          format: double
         institution:
           type: string
         dateCreated:

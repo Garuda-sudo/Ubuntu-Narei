@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,6 +36,17 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<AccountEntity> accounts;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<TransactionEntity> transactions;
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_goal",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "goal_id")
+    )
+    private List<GoalEntity> goals = new ArrayList<>();
 
     //TODO
 //    @Column(name = "address")
@@ -83,11 +96,27 @@ public class UserEntity {
         this.surname = surname;
     }
 
-//    public Set<AccountEntity> getAccounts() {
-//        return accounts;
-//    }
-//
-//    public void setAccounts(Set<AccountEntity> accounts) {
-//        this.accounts = accounts;
-//    }
+    public Set<AccountEntity> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Set<AccountEntity> accounts) {
+        this.accounts = accounts;
+    }
+
+    public Set<TransactionEntity> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<TransactionEntity> transactions) {
+        this.transactions = transactions;
+    }
+
+    public List<GoalEntity> getGoals() {
+        return goals;
+    }
+
+    public void setGoals(List<GoalEntity> goals) {
+        this.goals = goals;
+    }
 }

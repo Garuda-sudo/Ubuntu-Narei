@@ -4,6 +4,7 @@ import co.za.ubuntu.ubuntubackend.domain.Room;
 import co.za.ubuntu.ubuntubackend.domain.RoomRequest;
 import co.za.ubuntu.ubuntubackend.domain.StokvelRoom;
 import co.za.ubuntu.ubuntubackend.domain.enums.RoomType;
+import co.za.ubuntu.ubuntubackend.dto.BudgetDTO;
 import co.za.ubuntu.ubuntubackend.service.RoomStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class StokvelServiceImpl implements RoomStrategy {
     // and the rest kept in the group fund. When it's the users 2nd turn to payout, this improves
     // to 10% for eg.
     @Override
-    public StokvelRoom createRoomStrategy(RoomRequest roomRequest) {
+    public StokvelRoom createRoomStrategy(BudgetDTO roomRequest) {
         return null;
     }
 

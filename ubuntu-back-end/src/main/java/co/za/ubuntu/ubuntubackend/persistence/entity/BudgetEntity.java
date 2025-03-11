@@ -2,6 +2,7 @@ package co.za.ubuntu.ubuntubackend.persistence.entity;
 
 import co.za.ubuntu.model.Category;
 import co.za.ubuntu.model.Transaction;
+import co.za.ubuntu.ubuntubackend.domain.enums.RolloverType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,22 +10,23 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
+/**
+ * Quick note: When a user gets a discount code on reaching a goal and uses it, they need to submit
+ * a button saying they have made the purchase and the store also needs to scan the code saying that
+ * the coupon has been used. The store is then invoiced each month on the number of sales.
+ */
 @NoArgsConstructor
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "budget_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "budget", schema = "budgetbuddy")
 public class BudgetEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
-//    @NotNull
-//    @Column(name = "budget_income", nullable = false, precision = 9, scale = 2)
-//    private BigDecimal budgetIncome;
 
     @Size(max = 50)
     @NotNull
@@ -43,6 +45,10 @@ public class BudgetEntity {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
+    @NotNull
+    @Column(name = "status", nullable = false)
+    private Boolean status;
+
     @Size(max = 10)
     @NotNull
     @Column(name = "period_type", nullable = false, length = 10)
@@ -56,48 +62,41 @@ public class BudgetEntity {
     @Column(name = "date_updated", nullable = false)
     private Date dateUpdated;
 
-//    @NotNull
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private UserEntity userEntity;
-
     @NotNull
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-        name = "account_budget",
-        joinColumns = { @JoinColumn(name = "budget_id") },
-        inverseJoinColumns = { @JoinColumn(name = "account_id") }
-    )
-    private Set<AccountEntity> accounts = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity userEntity;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
-        name = "budget_category",
-        joinColumns = { @JoinColumn(name = "category_id") },
-        inverseJoinColumns = { @JoinColumn(name = "budget_id") }
+        name = "budget_goal",
+        joinColumns = @JoinColumn(name = "budget_id"),
+        inverseJoinColumns = @JoinColumn(name = "goal_id")
     )
-    private CategoryEntity category;
+    private List<GoalEntity> longTermGoals = new ArrayList<>();
+
+    @OneToMany(mappedBy = "category")
+    private Set<BudgetCategoryEntity> budgetCategories;
 
     @OneToMany(mappedBy = "budget", fetch = FetchType.LAZY)
-    private BudgetIncomeSplitEntity budgetIncomeSplitEntity;
+    private List<BudgetIncomeSplitEntity> budgetIncomeSplitEntity;
 
     @OneToMany(mappedBy = "budget")
     private Set<TransactionEntity> transactions = new HashSet<>();
 
-    public Set<AccountEntity> getAccounts() {
-        return accounts;
+    @Column(name = "auto_rollover")
+    private Boolean autoRollover; // If true, rollover happens automatically
+
+    @Column(name = "rollover_type")
+    @Enumerated(EnumType.STRING)
+    private RolloverType rolloverType; // Enum defining how rollover happens
+
+    public Set<BudgetCategoryEntity> getBudgetCategories() {
+        return budgetCategories;
     }
 
-    public void setAccounts(Set<AccountEntity> accounts) {
-        this.accounts = accounts;
-    }
-
-    public CategoryEntity getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryEntity category) {
-        this.category = category;
+    public void setBudgetCategories(Set<BudgetCategoryEntity> budgetCategories) {
+        this.budgetCategories = budgetCategories;
     }
 
     public Set<TransactionEntity> getTransactions() {
@@ -124,13 +123,21 @@ public class BudgetEntity {
         this.budgetName = budgetName;
     }
 
-//    public BigDecimal getBudgetIncome() {
-//        return budgetIncome;
-//    }
-//
-//    public void setBudgetIncome(BigDecimal budgetIncome) {
-//        this.budgetIncome = budgetIncome;
-//    }
+    public List<GoalEntity> getLongTermGoals() {
+        return longTermGoals;
+    }
+
+    public void setLongTermGoals(List<GoalEntity> longTermGoals) {
+        this.longTermGoals = longTermGoals;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
 
     public BigDecimal getAmountLimit() {
         return amountLimit;
@@ -172,6 +179,14 @@ public class BudgetEntity {
         this.dateCreated = dateCreated;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
     public Date getDateUpdated() {
         return dateUpdated;
     }
@@ -180,11 +195,27 @@ public class BudgetEntity {
         this.dateUpdated = dateUpdated;
     }
 
-    public BudgetIncomeSplitEntity getBudgetIncomeSplitEntity() {
+    public List<BudgetIncomeSplitEntity> getBudgetIncomeSplitEntity() {
         return budgetIncomeSplitEntity;
     }
 
-    public void setBudgetIncomeSplitEntity(BudgetIncomeSplitEntity budgetIncomeSplitEntity) {
+    public void setBudgetIncomeSplitEntity(List<BudgetIncomeSplitEntity> budgetIncomeSplitEntity) {
         this.budgetIncomeSplitEntity = budgetIncomeSplitEntity;
+    }
+
+    public Boolean getAutoRollover() {
+        return autoRollover;
+    }
+
+    public void setAutoRollover(Boolean autoRollover) {
+        this.autoRollover = autoRollover;
+    }
+
+    public RolloverType getRolloverType() {
+        return rolloverType;
+    }
+
+    public void setRolloverType(RolloverType rolloverType) {
+        this.rolloverType = rolloverType;
     }
 }

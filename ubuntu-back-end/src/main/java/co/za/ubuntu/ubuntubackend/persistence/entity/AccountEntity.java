@@ -3,8 +3,6 @@ package co.za.ubuntu.ubuntubackend.persistence.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -47,11 +45,27 @@ public class AccountEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @ManyToMany(mappedBy = "accounts")
-    private Set<BudgetEntity> budgets = new HashSet<>();
-
-    @OneToOne(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private BudgetIncomeSplitEntity budgetIncomeSplit;
+
+    @OneToMany(mappedBy = "account")
+    private Set<TransactionEntity> transactions = new HashSet<>();
+
+    public BudgetIncomeSplitEntity getBudgetIncomeSplit() {
+        return budgetIncomeSplit;
+    }
+
+    public void setBudgetIncomeSplit(BudgetIncomeSplitEntity budgetIncomeSplit) {
+        this.budgetIncomeSplit = budgetIncomeSplit;
+    }
+
+    public Set<TransactionEntity> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<TransactionEntity> transactions) {
+        this.transactions = transactions;
+    }
 
     public Integer getId() {
         return id;
@@ -109,15 +123,7 @@ public class AccountEntity {
         this.user = user;
     }
 
-    public Set<BudgetEntity> getBudgets() {
-        return budgets;
-    }
-
-    public void setBudgets(Set<BudgetEntity> budgets) {
-        this.budgets = budgets;
-    }
-
     //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transaction")
-//    private Set<TransactionEntity> transactions;
+    //    private Set<TransactionEntity> transactions;
 
 }
