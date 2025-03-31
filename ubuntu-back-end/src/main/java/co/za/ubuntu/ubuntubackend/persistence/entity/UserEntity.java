@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +48,9 @@ public class UserEntity {
         inverseJoinColumns = @JoinColumn(name = "goal_id")
     )
     private List<GoalEntity> goals = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<JointBudgetCategoryUserEntity> jointBudgetCategories = new HashSet<>();
 
     //TODO
 //    @Column(name = "address")
@@ -118,5 +122,13 @@ public class UserEntity {
 
     public void setGoals(List<GoalEntity> goals) {
         this.goals = goals;
+    }
+
+    public Set<JointBudgetCategoryUserEntity> getJointBudgetCategories() {
+        return jointBudgetCategories;
+    }
+
+    public void setJointBudgetCategories(Set<JointBudgetCategoryUserEntity> jointBudgetCategories) {
+        this.jointBudgetCategories = jointBudgetCategories;
     }
 }

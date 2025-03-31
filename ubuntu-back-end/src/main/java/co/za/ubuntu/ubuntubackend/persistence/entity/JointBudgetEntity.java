@@ -21,7 +21,7 @@ import java.util.*;
 @Entity
 @Table(name = "joint_budget", schema = "budgetbuddy")
 @DiscriminatorValue("JOINT")
-public class JointBudgetEntity extends BudgetEntity{
+public class JointBudgetEntity extends BudgetEntity {
 
     // For a joint budget, we have a list of members who participate.
     @ManyToMany
@@ -31,6 +31,9 @@ public class JointBudgetEntity extends BudgetEntity{
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<UserEntity> members = new HashSet<>();
+
+    @OneToMany(mappedBy = "jointBudget", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<JointBudgetCategoryEntity> jointBudgetCategories = new HashSet<>();
 
     // Other joint-specific fields here, such as group chat IDs, approval statuses, etc.
     private Integer chatId;
@@ -49,5 +52,23 @@ public class JointBudgetEntity extends BudgetEntity{
 
     public void setChatId(Integer chatId) {
         this.chatId = chatId;
+    }
+
+    public Set<JointBudgetCategoryEntity> getJointBudgetCategories() {
+        return jointBudgetCategories;
+    }
+
+    public void setJointBudgetCategories(Set<JointBudgetCategoryEntity> jointBudgetCategories) {
+        this.jointBudgetCategories = jointBudgetCategories;
+    }
+
+    public void addJointBudgetCategory(JointBudgetCategoryEntity category) {
+        jointBudgetCategories.add(category);
+        category.setJointBudget(this);
+    }
+
+    public void removeJointBudgetCategory(JointBudgetCategoryEntity category) {
+        jointBudgetCategories.remove(category);
+        category.setJointBudget(null);
     }
 }

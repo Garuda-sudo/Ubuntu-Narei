@@ -3,6 +3,7 @@ package co.za.ubuntu.ubuntubackend.domain;
 import co.za.ubuntu.model.Account;
 import co.za.ubuntu.model.Budget;
 import co.za.ubuntu.ubuntubackend.domain.enums.RoomType;
+import co.za.ubuntu.ubuntubackend.persistence.entity.JointBudgetEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -34,6 +35,11 @@ public class Room {
     private Map<Integer, Double> totalUserSavingsMap;
 
     private List<Integer> roomTransactions;
+
+    //Add constructor to map Joint Budget Entity to Room Entity
+    public Room(JointBudgetEntity jointBudgetEntity) {
+
+    }
 
 
 
