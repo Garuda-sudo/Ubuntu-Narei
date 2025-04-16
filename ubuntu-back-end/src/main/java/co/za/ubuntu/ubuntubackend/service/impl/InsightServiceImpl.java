@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class InsightServiceImpl implements InsightService {
 
 
     @Override
-    public List<TotalVsSpentInsightDTO> getBudgetVsActualSpending(Integer budgetId) {
+    public TotalVsSpentInsightDTO getBudgetVsActualSpending(Integer budgetId) {
 
         TotalVsSpentInsightDTO totalVsSpentInsightDTO = new TotalVsSpentInsightDTO();
 
@@ -51,7 +52,18 @@ public class InsightServiceImpl implements InsightService {
         totalVsSpentInsightDTO.setVariance(variance);
         totalVsSpentInsightDTO.setIsOverBudget(variance.compareTo(BigDecimal.ZERO) < 0);
 
-        return null;
+        Double percentageUsed = totalCategorySpend
+            .divide(totalBudgetAllocatedAmount, 2, RoundingMode.HALF_UP) // divide to 2 decimal places
+            .multiply(BigDecimal.valueOf(100)).doubleValue();
+        totalVsSpentInsightDTO.setPercentageUsed(percentageUsed);
+
+        Double percentageRemaining = totalBudgetAllocatedAmount
+            .subtract(totalCategorySpend)
+            .divide(totalBudgetAllocatedAmount, 2, RoundingMode.HALF_UP)
+            .multiply(BigDecimal.valueOf(100)).doubleValue();
+        totalVsSpentInsightDTO.setPercentageRemaining(percentageRemaining);
+
+        return totalVsSpentInsightDTO;
     }
 
     @Override

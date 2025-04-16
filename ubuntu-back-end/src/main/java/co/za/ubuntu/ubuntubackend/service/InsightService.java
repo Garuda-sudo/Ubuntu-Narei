@@ -24,7 +24,7 @@ public interface InsightService {
      * @param budgetId
      * @return Two variables within the InsightDTO, those being the budgetedTotal and the currentTotal
      */
-    List<TotalVsSpentInsightDTO> getBudgetVsActualSpending(Integer budgetId);
+    TotalVsSpentInsightDTO getBudgetVsActualSpending(Integer budgetId);
 
     /**
      * How the specified budgets' categories have been spent relative to the amounts budgeted

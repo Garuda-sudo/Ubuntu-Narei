@@ -18,4 +18,5 @@ public class TotalVsSpentInsightDTO extends InsightDTO {
     private BigDecimal variance;
     private Boolean isOverBudget;
     private Double percentageUsed;
+    private Double percentageRemaining;
 }
