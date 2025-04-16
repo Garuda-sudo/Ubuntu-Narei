@@ -12,9 +12,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class DiscountDTO extends Budget {
+public class DiscountDTO {
 
     private LocalDate startDate;
     private LocalDate endDate;
+    private String discountType;
+
+    //Short term goal details
+    private Integer shortTermGoalId;
+    private Integer budgetId;
+    private Integer budgetCategoryId;
+    private Integer userId;
+
+    //Long term goal details
+    private Integer longTermGoalId;
+    private List<Integer> userIds;
 
 }

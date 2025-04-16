@@ -9,8 +9,10 @@ import co.za.ubuntu.ubuntubackend.dto.BudgetDTO;
 import co.za.ubuntu.ubuntubackend.dto.BudgetIncomeSplitDTO;
 import co.za.ubuntu.ubuntubackend.dto.DiscountDTO;
 import co.za.ubuntu.ubuntubackend.service.BudgetService;
+import co.za.ubuntu.ubuntubackend.service.DiscountService;
 import co.za.ubuntu.ubuntubackend.service.impl.RoomStrategyImpl.JointBudgetServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,23 +23,45 @@ import java.util.logging.Logger;
 
 @RestController
 public class DiscountController {
-    private final BudgetService budgetService;
-
+    private final DiscountService discountService;
     private final JointBudgetServiceImpl jointBudgetService;
 
 
-    public DiscountController(BudgetService budgetService, JointBudgetServiceImpl jointBudgetService) {
-        this.budgetService = budgetService;
+    public DiscountController(DiscountService discountService, JointBudgetServiceImpl jointBudgetService) {
+        this.discountService = discountService;
         this.jointBudgetService = jointBudgetService;
     }
 
-    @GetMapping
-    public ResponseEntity<DiscountDTO> checkDiscount(
-        @RequestParam(required = false) List<Integer> userIds
-    ) {
-        DiscountDTO discountDTO = new DiscountDTO();
+    @GetMapping("/short-term/{userId}")
+    public ResponseEntity<List<DiscountDTO>> getShortTermGoalDiscounts(@PathVariable Integer userId) {
+        List<DiscountDTO> discounts = discountService.getShortTermGoalDiscounts(new DiscountDTO());
+        return ResponseEntity.ok(discounts);
+    }
 
-        return ResponseEntity.ok().body();
+    @GetMapping("/long-term/{userId}")
+    public ResponseEntity<List<DiscountDTO>> getLongTermGoalDiscounts(@PathVariable Integer userId) {
+        List<DiscountDTO> discounts = discountService.getLongTermGoalDiscounts(new DiscountDTO());
+        return ResponseEntity.ok(discounts);
+    }
+
+    @GetMapping("/progress/{goalId}")
+    public ResponseEntity<GoalProgressDTO> getGoalProgress(@PathVariable Integer goalId) {
+        GoalProgressDTO progress = discountService.getGoalProgress(goalId);
+        return ResponseEntity.ok(progress);
+    }
+
+    @PostMapping("/redeem/{discountId}")
+    public ResponseEntity<Void> redeemDiscount(@PathVariable Long discountId) {
+        discountService.redeemDiscount(discountId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/qrcode/{discountId}")
+    public ResponseEntity<byte[]> generateDiscountQRCode(@PathVariable Long discountId) {
+        byte[] qrCodeImage = discountService.generateDiscountQRCode(discountId);
+        return ResponseEntity.ok()
+            .contentType(MediaType.IMAGE_PNG)
+            .body(qrCodeImage);
     }
 
 
