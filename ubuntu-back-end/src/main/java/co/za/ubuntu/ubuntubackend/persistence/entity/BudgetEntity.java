@@ -36,7 +36,8 @@ public class BudgetEntity {
 
     @NotNull
     @Column(name = "amount_limit", nullable = false, precision = 9, scale = 2)
-    private BigDecimal amountLimit;
+    private BigDecimal amountLimit; //The total amount budgeted on creation of this budget. Name might not be clear
+    // enough
 
     @NotNull
     @Column(name = "start_date", nullable = false)

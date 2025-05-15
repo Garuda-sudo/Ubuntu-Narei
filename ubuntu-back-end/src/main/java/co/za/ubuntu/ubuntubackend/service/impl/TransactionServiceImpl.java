@@ -46,6 +46,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public TransactionResponse createTransaction(Long budgetId, Transaction transaction) {
 
+        //TODO: NB! Any changes via a transaction HAS to update the respective actualSpend value on the budgetCategory
+        // entity and this is enforced on the domain design level. The actualSpend field may only be affected via a
+        // transaction.
+
         //TODO: The flow: The transaction object should have the budget ID. This budget ID
         // is linked to the new transaction.
         Instant currentDateTime = Instant.now();
@@ -82,6 +86,10 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void deleteTransaction(Long id) {
+
+        //TODO: NB! Any changes via a transaction HAS to update the respective actualSpend value on the budgetCategory
+        // entity and this is enforced on the domain design level. The actualSpend field may only be affected via a
+        // transaction.
 
         TransactionEntity transactionEntity = transactionRepository.findById(id.intValue()).orElseThrow();
 
@@ -121,6 +129,10 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionResponse updateTransaction(Long id, Transaction transaction) {
+
+        //TODO: NB! Any changes via a transaction HAS to update the respective actualSpend value on the budgetCategory
+        // entity and this is enforced on the domain design level. The actualSpend field may only be affected via a
+        // transaction.
 
         //TODO: In the current case, only the last update can be seen. Do we need to have the entire history
         // of updates, as this will change the implementation?

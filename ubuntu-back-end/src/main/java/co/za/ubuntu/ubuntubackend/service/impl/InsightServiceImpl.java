@@ -135,8 +135,26 @@ public class InsightServiceImpl implements InsightService {
         //Get all archived/active budgets for the given budget over a time period
         Set<BudgetEntity> budgetVersions = budgetRepository.findAllBudgetVersions(budgetId).orElseThrow();
 
+        SpendingTrendInsightDTO spendingTrendInsightDTO = new SpendingTrendInsightDTO();
+        spendingTrendInsightDTO.setBaseBudgetName("Example"); //Might need to get the latest budget
+        // version name for ultimate accuracy
+
         //For the period, get the amount spent across the entire budgets as well as for each
         //category over the budget period
+        budgetVersions.stream().map(
+            budgetEntity -> {
+
+                //Now create the trend specific info for each budget version
+                BudgetVersionSummaryDTO budgetVersionSummaryDTO = new BudgetVersionSummaryDTO();
+                budgetVersionSummaryDTO.setVersionName(budgetEntity.getBudgetName());
+                budgetVersionSummaryDTO.setVersionId(budgetEntity.getVersionNumber());
+                budgetVersionSummaryDTO.setStartDate(budgetEntity.getStartDate());
+                budgetVersionSummaryDTO.setEndDate(budgetEntity.getEndDate());
+                budgetVersionSummaryDTO.setTotalPlanned(budgetEntity.getAmountLimit());
+                budgetVersionSummaryDTO.setTotalActual();
+
+            }
+        ).collect(Collectors.toList());
 
         return null;
     }
