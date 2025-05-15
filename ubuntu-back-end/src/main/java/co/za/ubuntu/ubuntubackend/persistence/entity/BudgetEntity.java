@@ -7,7 +7,9 @@ import co.za.ubuntu.ubuntubackend.domain.enums.RolloverType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,6 +22,8 @@ import java.util.*;
  */
 @NoArgsConstructor
 @Entity
+@Getter
+@Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "budget_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "budget", schema = "budgetbuddy")
@@ -38,6 +42,10 @@ public class BudgetEntity {
     @Column(name = "amount_limit", nullable = false, precision = 9, scale = 2)
     private BigDecimal amountLimit; //The total amount budgeted on creation of this budget. Name might not be clear
     // enough
+
+    @NotNull
+    @Column(name = "total_spent", nullable = false, precision = 9, scale = 2)
+    private BigDecimal totalActualAmountSpent;
 
     @NotNull
     @Column(name = "start_date", nullable = false)
@@ -102,156 +110,4 @@ public class BudgetEntity {
 
     @Column(name = "rollover_group_id")
     private UUID rolloverGroupId;
-
-    public Set<BudgetCategoryEntity> getBudgetCategories() {
-        return budgetCategories;
-    }
-
-    public void setBudgetCategories(Set<BudgetCategoryEntity> budgetCategories) {
-        this.budgetCategories = budgetCategories;
-    }
-
-    public Set<TransactionEntity> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(Set<TransactionEntity> transactions) {
-        this.transactions = transactions;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getBudgetName() {
-        return budgetName;
-    }
-
-    public void setBudgetName(String budgetName) {
-        this.budgetName = budgetName;
-    }
-
-    public List<GoalEntity> getLongTermGoals() {
-        return longTermGoals;
-    }
-
-    public void setLongTermGoals(List<GoalEntity> longTermGoals) {
-        this.longTermGoals = longTermGoals;
-    }
-
-    public UserEntity getUserEntity() {
-        return userEntity;
-    }
-
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
-    }
-
-    public BigDecimal getAmountLimit() {
-        return amountLimit;
-    }
-
-    public void setAmountLimit(BigDecimal amountLimit) {
-        this.amountLimit = amountLimit;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getPeriodType() {
-        return periodType;
-    }
-
-    public void setPeriodType(String periodType) {
-        this.periodType = periodType;
-    }
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public BudgetStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(BudgetStatus status) {
-        this.status = status;
-    }
-
-    public Integer getVersionNumber() {
-        return versionNumber;
-    }
-
-    public void setVersionNumber(Integer versionNumber) {
-        this.versionNumber = versionNumber;
-    }
-
-    public BudgetEntity getPreviousVersion() {
-        return previousVersion;
-    }
-
-    public void setPreviousVersion(BudgetEntity previousVersion) {
-        this.previousVersion = previousVersion;
-    }
-
-    public Date getDateUpdated() {
-        return dateUpdated;
-    }
-
-    public void setDateUpdated(Date dateUpdated) {
-        this.dateUpdated = dateUpdated;
-    }
-
-    public List<BudgetIncomeSplitEntity> getBudgetIncomeSplitEntity() {
-        return budgetIncomeSplitEntity;
-    }
-
-    public void setBudgetIncomeSplitEntity(List<BudgetIncomeSplitEntity> budgetIncomeSplitEntity) {
-        this.budgetIncomeSplitEntity = budgetIncomeSplitEntity;
-    }
-
-    public Boolean getAutoRollover() {
-        return autoRollover;
-    }
-
-    public void setAutoRollover(Boolean autoRollover) {
-        this.autoRollover = autoRollover;
-    }
-
-    public RolloverType getRolloverType() {
-        return rolloverType;
-    }
-
-    public void setRolloverType(RolloverType rolloverType) {
-        this.rolloverType = rolloverType;
-    }
-
-    public UUID getRolloverGroupId() {
-        return rolloverGroupId;
-    }
-
-    public void setRolloverGroupId(UUID rolloverGroupId) {
-        this.rolloverGroupId = rolloverGroupId;
-    }
 }

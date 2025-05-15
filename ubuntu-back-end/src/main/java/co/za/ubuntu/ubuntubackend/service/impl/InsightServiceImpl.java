@@ -140,8 +140,9 @@ public class InsightServiceImpl implements InsightService {
         // version name for ultimate accuracy
 
         //For the period, get the amount spent across the entire budgets as well as for each
-        //category over the budget period
-        budgetVersions.stream().map(
+        //category over the budget period and add them to the overall spending insight DTO
+        List<BudgetVersionSummaryDTO> budgetVersionSummaryDTOList = new ArrayList<>();
+        budgetVersions.forEach(
             budgetEntity -> {
 
                 //Now create the trend specific info for each budget version
@@ -151,10 +152,14 @@ public class InsightServiceImpl implements InsightService {
                 budgetVersionSummaryDTO.setStartDate(budgetEntity.getStartDate());
                 budgetVersionSummaryDTO.setEndDate(budgetEntity.getEndDate());
                 budgetVersionSummaryDTO.setTotalPlanned(budgetEntity.getAmountLimit());
-                budgetVersionSummaryDTO.setTotalActual();
+                budgetVersionSummaryDTO.setTotalActual(budgetEntity.getTotalActualAmountSpent());
+
+                budgetVersionSummaryDTOList.add(budgetVersionSummaryDTO);
 
             }
-        ).collect(Collectors.toList());
+        );
+
+        spendingTrendInsightDTO.setBudgetVersions(budgetVersionSummaryDTOList);
 
         return null;
     }
