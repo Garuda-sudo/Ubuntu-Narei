@@ -1,21 +1,17 @@
 package co.za.ubuntu.ubuntubackend.service.impl;
 
-import co.za.ubuntu.model.Account;
-import co.za.ubuntu.ubuntubackend.dto.InsightDTOs.CategoryInsightDTO;
-import co.za.ubuntu.ubuntubackend.dto.InsightDTOs.TotalVsSpentInsightDTO;
+import co.za.ubuntu.ubuntubackend.dto.InsightDTOs.*;
 import co.za.ubuntu.ubuntubackend.persistence.entity.BudgetCategoryEntity;
 import co.za.ubuntu.ubuntubackend.persistence.entity.BudgetEntity;
 import co.za.ubuntu.ubuntubackend.persistence.repository.AccountRepository;
 import co.za.ubuntu.ubuntubackend.persistence.repository.BudgetRepository;
-import co.za.ubuntu.ubuntubackend.service.AccountService;
 import co.za.ubuntu.ubuntubackend.service.InsightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("insightService")
@@ -67,7 +63,81 @@ public class InsightServiceImpl implements InsightService {
     }
 
     @Override
-    public CategoryInsightDTO getCategoryInsights(Integer budgetId) {
+    public BudgetInsightDTO getCategoryInsights(Integer budgetId) {
+
+        //Given the single budget or joint budget get all the categories linked
+        BudgetEntity budget = budgetRepository.findById(budgetId).orElseThrow();
+        Set<BudgetCategoryEntity> budgetCategories = budget.getBudgetCategories();
+
+        //Create a custom DTO to return a map which gives a category and its respective amount
+        BigDecimal totalBudgetAllocated = budget.getAmountLimit();
+        BigDecimal totalBudgetSpent = budgetCategories.stream()
+            .map(BudgetCategoryEntity::getActualSpent)
+            .filter(Objects::nonNull)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        List<CategoryInsightDTO> categoryInsights = budgetCategories.stream().map(budgetCategory -> {
+            BigDecimal allocated = budgetCategory.getAllocatedAmount();
+            BigDecimal spent = Optional.ofNullable(budgetCategory.getActualSpent()).orElse(BigDecimal.ZERO);
+
+            double percentOfTotalBudget = allocated
+                .divide(totalBudgetAllocated, 4, RoundingMode.HALF_UP)
+                .multiply(BigDecimal.valueOf(100))
+                .doubleValue();
+
+            double percentOfAllocatedUsed = spent
+                .divide(allocated, 4, RoundingMode.HALF_UP)
+                .multiply(BigDecimal.valueOf(100))
+                .doubleValue();
+
+            double percentOfTotalSpent = 0.0;
+
+            if (totalBudgetSpent.compareTo(BigDecimal.ZERO) > 0) {
+                percentOfTotalSpent = spent
+                    .divide(totalBudgetSpent, 4, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100))
+                    .doubleValue();
+            }
+
+            CategoryInsightDTO insight = new CategoryInsightDTO();
+            insight.setName(budgetCategory.getCategory().getName());
+            insight.setAllocatedAmount(allocated);
+            insight.setActualSpent(spent);
+            insight.setPercentOfTotalBudget(percentOfTotalBudget); //how much of the total allocated budget was assigned to this category
+            insight.setPercentOfAllocatedUsed(percentOfAllocatedUsed); //how much of the category’s own budget has been used
+            insight.setPercentageOfTotalSpent(percentOfTotalSpent);
+
+            return insight;
+        }).collect(Collectors.toList());
+
+        BudgetCategoryInsightDTO result = new BudgetCategoryInsightDTO();
+        result.setInsights(categoryInsights);
+
+        //Add the percentage for each category relative to the entire budget spent so far
+
+        //Add percentage of total allocated budget for each category vs the total allocated budget
+
+        //Give a map/DTO of the amount spent vs the amount allocated for each category
+
+        return null;
+    }
+
+    @Override
+    public IncomeSplitInsightDTO getIncomeSplitInsights(Integer accountId) {
+        return null;
+    }
+
+    @Override
+    public SpendingTrendInsightDTO getSpendingTrendInsights(Integer budgetId) {
+
+        //Spending trend for a budget over a given period e.g. 3 months, 9 months etc
+
+        //Get all archived/active budgets for the given budget over a time period
+        Set<BudgetEntity> budgetVersions = budgetRepository.findAllBudgetVersions(budgetId).orElseThrow();
+
+        //For the period, get the amount spent across the entire budgets as well as for each
+        //category over the budget period
+
         return null;
     }
 }

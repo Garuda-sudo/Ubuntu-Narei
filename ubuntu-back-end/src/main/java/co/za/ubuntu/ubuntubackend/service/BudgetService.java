@@ -64,7 +64,7 @@ public interface BudgetService {
 
     List<TransactionResponse> getBudgetTransactions(Long budgetId);
 
-    void  updateBudgetIncomeSplit(BudgetIncomeSplitDTO budgetIncomeSplitDTO);
+    void updateBudgetIncomeSplit(BudgetIncomeSplitDTO budgetIncomeSplitDTO);
 
     /**
      * This will allow an user to directly use funds they have allocated to their various budget
@@ -78,4 +78,6 @@ public interface BudgetService {
      * @return
      */
     BigDecimal budgetTransact(BigDecimal amount, Long budgetId, Category category);
+
+    void autoRolloverBudgets();
 }

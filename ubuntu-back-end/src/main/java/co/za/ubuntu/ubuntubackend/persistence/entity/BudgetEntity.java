@@ -2,6 +2,7 @@ package co.za.ubuntu.ubuntubackend.persistence.entity;
 
 import co.za.ubuntu.model.Category;
 import co.za.ubuntu.model.Transaction;
+import co.za.ubuntu.ubuntubackend.domain.enums.BudgetStatus;
 import co.za.ubuntu.ubuntubackend.domain.enums.RolloverType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -45,9 +46,9 @@ public class BudgetEntity {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private Boolean status;
+    private BudgetStatus status;
 
     @Size(max = 10)
     @NotNull
@@ -84,12 +85,22 @@ public class BudgetEntity {
     @OneToMany(mappedBy = "budget")
     private Set<TransactionEntity> transactions = new HashSet<>();
 
+    @Column(name = "version_number")
+    private Integer versionNumber;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "previous_version_id")
+    private BudgetEntity previousVersion;
+
     @Column(name = "auto_rollover")
     private Boolean autoRollover; // If true, rollover happens automatically
 
     @Column(name = "rollover_type")
     @Enumerated(EnumType.STRING)
     private RolloverType rolloverType; // Enum defining how rollover happens
+
+    @Column(name = "rollover_group_id")
+    private UUID rolloverGroupId;
 
     public Set<BudgetCategoryEntity> getBudgetCategories() {
         return budgetCategories;
@@ -179,12 +190,28 @@ public class BudgetEntity {
         this.dateCreated = dateCreated;
     }
 
-    public Boolean getStatus() {
+    public BudgetStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(BudgetStatus status) {
         this.status = status;
+    }
+
+    public Integer getVersionNumber() {
+        return versionNumber;
+    }
+
+    public void setVersionNumber(Integer versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
+    public BudgetEntity getPreviousVersion() {
+        return previousVersion;
+    }
+
+    public void setPreviousVersion(BudgetEntity previousVersion) {
+        this.previousVersion = previousVersion;
     }
 
     public Date getDateUpdated() {
@@ -217,5 +244,13 @@ public class BudgetEntity {
 
     public void setRolloverType(RolloverType rolloverType) {
         this.rolloverType = rolloverType;
+    }
+
+    public UUID getRolloverGroupId() {
+        return rolloverGroupId;
+    }
+
+    public void setRolloverGroupId(UUID rolloverGroupId) {
+        this.rolloverGroupId = rolloverGroupId;
     }
 }

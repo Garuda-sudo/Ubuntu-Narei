@@ -11,23 +11,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class CategoryInsightDTO extends InsightDTO {
+public class CategoryInsightDTO {
 
-    private List<BudgetCategorySummary> dataPoints;
+    private Long categoryId;
+    private String name;
+    private BigDecimal allocatedAmount;
+    private BigDecimal actualSpent;
 
-    public static class BudgetCategorySummary {
-        private Long budgetId;
-        private String budgetName;
-        private List<CategorySummaryItem> categories;
-    }
+    private Double percentOfTotalBudget;      // allocatedAmount / totalBudgeted * 100
+    private Double percentOfAllocatedUsed;    // actualSpent / allocatedAmount * 100
+    private Double percentageOfTotalSpent;       // actualSpent / totalSpent * 100
 
-    public static class CategorySummaryItem {
-        private Long categoryId;
-        private String name;
-        private BigDecimal spentAmount;
-        private BigDecimal budgetedAmount;
-        private boolean isOverBudget;
-        private BigDecimal percentageChange; // for trends
-    }
-
+    private boolean isOverBudget;
+    private Double percentageChange; // trend: change compared to previous budget period
 }

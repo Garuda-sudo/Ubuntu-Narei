@@ -2,6 +2,7 @@ package co.za.ubuntu.ubuntubackend.service.impl.RoomStrategyImpl;
 
 import co.za.ubuntu.ubuntubackend.domain.Room;
 import co.za.ubuntu.ubuntubackend.domain.RoomRequest;
+import co.za.ubuntu.ubuntubackend.domain.enums.BudgetStatus;
 import co.za.ubuntu.ubuntubackend.domain.enums.GoalType;
 import co.za.ubuntu.ubuntubackend.domain.enums.RoomType;
 import co.za.ubuntu.ubuntubackend.dto.AccountSplitDTO;
@@ -55,7 +56,7 @@ public class JointBudgetServiceImpl implements RoomStrategy {
         jointBudgetEntity.setDateCreated(Date.from(Instant.now()));
         jointBudgetEntity.setStartDate(roomRequest.getStartDate());
         jointBudgetEntity.setEndDate(roomRequest.getEndDate());
-        jointBudgetEntity.setStatus(true);
+        jointBudgetEntity.setStatus(BudgetStatus.ACTIVE);
 
         //========================== Set the Budget Income Split =============================================//
 

@@ -1,12 +1,9 @@
 package co.za.ubuntu.ubuntubackend.service;
 
-import co.za.ubuntu.model.BudgetResponse;
-import co.za.ubuntu.ubuntubackend.dto.DiscountDTO;
-import co.za.ubuntu.ubuntubackend.dto.InsightDTO;
-import co.za.ubuntu.ubuntubackend.dto.InsightDTOs.CategoryInsightDTO;
+import co.za.ubuntu.ubuntubackend.dto.InsightDTOs.BudgetInsightDTO;
+import co.za.ubuntu.ubuntubackend.dto.InsightDTOs.IncomeSplitInsightDTO;
+import co.za.ubuntu.ubuntubackend.dto.InsightDTOs.SpendingTrendInsightDTO;
 import co.za.ubuntu.ubuntubackend.dto.InsightDTOs.TotalVsSpentInsightDTO;
-
-import java.util.List;
 
 /**
  * Service interface for managing budget insights related to users.
@@ -31,6 +28,10 @@ public interface InsightService {
      * @param budgetId
      * @return Two variables within the InsightDTO, those being the budgetedTotal and the currentTotal
      */
-    CategoryInsightDTO getCategoryInsights(Integer budgetId);
+    BudgetInsightDTO getCategoryInsights(Integer budgetId);
+
+    IncomeSplitInsightDTO getIncomeSplitInsights(Integer accountId);
+
+    SpendingTrendInsightDTO getSpendingTrendInsights(Integer budgetId);
 
 }

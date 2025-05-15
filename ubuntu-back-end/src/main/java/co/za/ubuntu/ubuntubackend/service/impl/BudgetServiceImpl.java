@@ -1,6 +1,7 @@
 package co.za.ubuntu.ubuntubackend.service.impl;
 
 import co.za.ubuntu.model.*;
+import co.za.ubuntu.ubuntubackend.domain.enums.BudgetStatus;
 import co.za.ubuntu.ubuntubackend.domain.enums.GoalType;
 import co.za.ubuntu.ubuntubackend.domain.exception.NotFoundException;
 import co.za.ubuntu.ubuntubackend.dto.AccountSplitDTO;
@@ -13,13 +14,11 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -126,7 +125,7 @@ public class BudgetServiceImpl implements BudgetService {
         budgetEntity.setDateCreated(Date.from(Instant.now()));
         budgetEntity.setStartDate(budget.getStartDate());
         budgetEntity.setEndDate(budget.getEndDate());
-        budgetEntity.setStatus(true);
+        budgetEntity.setStatus(BudgetStatus.ACTIVE);
 
 
         //We need to get which user is creating the budget
@@ -380,6 +379,16 @@ public class BudgetServiceImpl implements BudgetService {
         //they can give the account details and the payments will automatically be subtracted
 
         return null;
+    }
+
+    @Override
+    public void autoRolloverBudgets() {
+
+//        List<BudgetEntity> expiringBudgets = budgetRepository
+//            .findAllByStatusAndAutoRolloverTrueAndEndDateLessThanEqual(BudgetStatus.ACTIVE, LocalDate.now());
+
+
+
     }
 
     private TransactionResponse domainToDTO(TransactionEntity transactionEntity) {
