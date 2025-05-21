@@ -4,6 +4,7 @@ import co.za.ubuntu.model.*;
 import co.za.ubuntu.ubuntubackend.dto.BudgetDTO;
 import co.za.ubuntu.ubuntubackend.dto.BudgetIncomeSplitDTO;
 import co.za.ubuntu.ubuntubackend.dto.DiscountDTO;
+import co.za.ubuntu.ubuntubackend.dto.GoalProgressDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -32,5 +33,7 @@ public interface DiscountService {
     List<DiscountDTO> getShortTermGoalDiscounts(DiscountDTO discountDTO);
 
     List<DiscountDTO> getLongTermGoalDiscounts(DiscountDTO discountDTO);
+
+    GoalProgressDTO getGoalProgress(Integer goalId);
 
 }

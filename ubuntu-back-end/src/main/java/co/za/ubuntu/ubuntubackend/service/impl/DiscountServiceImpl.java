@@ -3,6 +3,7 @@ package co.za.ubuntu.ubuntubackend.service.impl;
 import co.za.ubuntu.model.BudgetResponse;
 import co.za.ubuntu.model.User;
 import co.za.ubuntu.ubuntubackend.dto.DiscountDTO;
+import co.za.ubuntu.ubuntubackend.dto.GoalProgressDTO;
 import co.za.ubuntu.ubuntubackend.persistence.entity.DiscountEntity;
 import co.za.ubuntu.ubuntubackend.persistence.entity.UserEntity;
 import co.za.ubuntu.ubuntubackend.persistence.repository.UserRepository;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("discountService")
 public class DiscountServiceImpl implements DiscountService {
 
     UserRepository userRepository;
@@ -59,6 +60,11 @@ public class DiscountServiceImpl implements DiscountService {
          * will use this info to fetch all discounts they are eligible for relating to that goal.
          */
 
+        return null;
+    }
+
+    @Override
+    public GoalProgressDTO getGoalProgress(Integer goalId) {
         return null;
     }
 }

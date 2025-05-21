@@ -153,6 +153,7 @@ public class InsightServiceImpl implements InsightService {
                 budgetVersionSummaryDTO.setEndDate(budgetEntity.getEndDate());
                 budgetVersionSummaryDTO.setTotalPlanned(budgetEntity.getAmountLimit());
                 budgetVersionSummaryDTO.setTotalActual(budgetEntity.getTotalActualAmountSpent());
+                //budgetVersionSummaryDTO.setCategorySpending();
 
                 budgetVersionSummaryDTOList.add(budgetVersionSummaryDTO);
 

@@ -64,7 +64,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionEntity.setDate(currentDateTime);
         //transactionEntity.setUserEntity(budgetEntity.getUserEntity());
         transactionEntity.setCurrency("ZAR"); //TODO: Need to add currency enums
-        transactionEntity.setCategoryEntity(new CategoryEntity()); //TODO: Add category data
+        //transactionEntity.setCategoryEntity(new CategoryEntity()); //TODO: Add category data
 //        transactionEntity.setBudgets(
 //            Stream.of(budgetEntity).collect(Collectors.toCollection(HashSet::new))
 //        );

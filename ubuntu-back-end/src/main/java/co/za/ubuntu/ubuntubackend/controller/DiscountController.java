@@ -8,6 +8,7 @@ import co.za.ubuntu.model.TransactionResponse;
 import co.za.ubuntu.ubuntubackend.dto.BudgetDTO;
 import co.za.ubuntu.ubuntubackend.dto.BudgetIncomeSplitDTO;
 import co.za.ubuntu.ubuntubackend.dto.DiscountDTO;
+import co.za.ubuntu.ubuntubackend.dto.GoalProgressDTO;
 import co.za.ubuntu.ubuntubackend.service.BudgetService;
 import co.za.ubuntu.ubuntubackend.service.DiscountService;
 import co.za.ubuntu.ubuntubackend.service.impl.RoomStrategyImpl.JointBudgetServiceImpl;
@@ -52,16 +53,17 @@ public class DiscountController {
 
     @PostMapping("/redeem/{discountId}")
     public ResponseEntity<Void> redeemDiscount(@PathVariable Long discountId) {
-        discountService.redeemDiscount(discountId);
+        //discountService.redeemDiscount(discountId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/qrcode/{discountId}")
     public ResponseEntity<byte[]> generateDiscountQRCode(@PathVariable Long discountId) {
-        byte[] qrCodeImage = discountService.generateDiscountQRCode(discountId);
-        return ResponseEntity.ok()
-            .contentType(MediaType.IMAGE_PNG)
-            .body(qrCodeImage);
+//        byte[] qrCodeImage = discountService.generateDiscountQRCode(discountId);
+//        return ResponseEntity.ok()
+//            .contentType(MediaType.IMAGE_PNG)
+//            .body(qrCodeImage);
+        return null;
     }
 
 

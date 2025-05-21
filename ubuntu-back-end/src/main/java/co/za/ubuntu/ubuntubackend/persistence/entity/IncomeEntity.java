@@ -32,9 +32,9 @@ public class IncomeEntity {
     @Column(name = "income_amount", nullable = false, length = 50)
     private BigDecimal incomeAmount;
 
-    @NotNull
-    @OneToOne(mappedBy = "account")
-    private AccountEntity accountEntity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
+    private AccountEntity account;
 
     @Column(name = "source_name")
     private String sourceName;

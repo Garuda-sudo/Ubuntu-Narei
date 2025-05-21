@@ -13,6 +13,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -49,11 +50,11 @@ public class BudgetEntity {
 
     @NotNull
     @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @NotNull
     @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -85,7 +86,7 @@ public class BudgetEntity {
     )
     private List<GoalEntity> longTermGoals = new ArrayList<>();
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "budget")
     private Set<BudgetCategoryEntity> budgetCategories;
 
     @OneToMany(mappedBy = "budget", fetch = FetchType.LAZY)

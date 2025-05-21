@@ -159,8 +159,8 @@ public class BudgetServiceImpl implements BudgetService {
 
                 if (accountMap.containsKey(accountSplitDTO.getAccountId())) {
                     budgetIncomeSplitEntity.setAccount(accountMap.get(accountSplitDTO.getAccountId()));
-                    budgetIncomeSplitEntity.setSplitType();
-                    budgetIncomeSplitEntity.setIncomeAmount();
+                    //budgetIncomeSplitEntity.setSplitType(); TODO
+                    //budgetIncomeSplitEntity.setIncomeAmount(); TODO
                 } else {
                     throw new RuntimeException(
                         "User not linked to given Account ID");
@@ -418,8 +418,8 @@ public class BudgetServiceImpl implements BudgetService {
         budgetEntity.setBudgetName(budget.getName());
         budgetEntity.setAmountLimit(BigDecimal.valueOf(budget.getAmountLimit()));
         budgetEntity.setPeriodType(budget.getPeriodType().getValue());
-        budgetEntity.setStartDate(budget.getStartDate().toLocalDate());
-        budgetEntity.setEndDate(budget.getEndDate().toLocalDate());
+        budgetEntity.setStartDate(budget.getStartDate());
+        budgetEntity.setEndDate(budget.getEndDate());
         budgetEntity.setDateCreated(new Date());
         //TODO: This must only be updated on update to a budget. Need a flag of some sort
         budgetEntity.setDateUpdated(new Date());

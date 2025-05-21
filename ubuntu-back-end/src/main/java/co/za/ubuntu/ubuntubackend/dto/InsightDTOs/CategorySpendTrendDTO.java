@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class CategorySpendTrendDTO extends InsightDTO {
+public class CategorySpendTrendDTO {
 
     private String categoryName;
     private BigDecimal plannedAmount;

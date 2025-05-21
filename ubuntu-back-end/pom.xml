@@ -15,12 +15,11 @@
     <description>Rest API for fintech application</description>
     <properties>
         <java.version>17</java.version>
-        <project.lombok.version>1.18.28</project.lombok.version>
+        <project.lombok.version>1.18.32</project.lombok.version>
         <openapi-generator.version>6.6.0</openapi-generator.version>
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
         <springdoc-openapi-ui.version>1.7.0</springdoc-openapi-ui.version>
         <logbook.version>3.3.0</logbook.version>
-        <mapstruct.version>1.5.5.Final</mapstruct.version>
     </properties>
     <dependencies>
         <!--Spring Boot Dependencies-->
@@ -59,11 +58,6 @@
             <groupId>org.zalando</groupId>
             <artifactId>logbook-spring-boot-starter</artifactId>
             <version>${logbook.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${mapstruct.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -135,6 +129,13 @@
                                 <skipDefaultInterface>true</skipDefaultInterface>
                                 <useSpringBoot3>true</useSpringBoot3>
 <!--                                <additionalModelTypeAnnotations>@lombok.NoArgsConstructor @lombok.Builder @lombok.AllArgsConstructor @lombok.Getter</additionalModelTypeAnnotations>-->
+                                <additionalModelTypeAnnotations>
+                                    @lombok.Getter
+                                    @lombok.Setter
+                                    @lombok.NoArgsConstructor
+                                    @lombok.AllArgsConstructor
+                                    @lombok.Builder
+                                </additionalModelTypeAnnotations>
                             </configOptions>
                             <typeMappings>
                                 <typeMapping>OffsetDateTime=java.time.LocalDateTime</typeMapping>
@@ -145,19 +146,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${mapstruct.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
             </plugin>
         </plugins>
     </build>

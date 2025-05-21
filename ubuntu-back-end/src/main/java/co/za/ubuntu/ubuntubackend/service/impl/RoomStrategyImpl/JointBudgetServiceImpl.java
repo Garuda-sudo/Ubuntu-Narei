@@ -82,8 +82,8 @@ public class JointBudgetServiceImpl implements RoomStrategy {
                 BudgetIncomeSplitEntity budgetIncomeSplit = new BudgetIncomeSplitEntity();
 
                 budgetIncomeSplit.setAccount(accountMap.get(accountSplitDTO.getAccountId()));
-                budgetIncomeSplit.setSplitType();
-                budgetIncomeSplit.setIncomeAmount();
+                //budgetIncomeSplit.setSplitType();
+                //budgetIncomeSplit.setIncomeAmount();
 
                 budgetIncomeSplitEntities.add(budgetIncomeSplit);
             })
