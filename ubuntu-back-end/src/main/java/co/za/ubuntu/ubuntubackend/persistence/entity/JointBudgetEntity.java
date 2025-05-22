@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,6 +21,8 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "joint_budget", schema = "budgetbuddy")
 @DiscriminatorValue("JOINT")
 public class JointBudgetEntity extends BudgetEntity {
@@ -37,38 +41,4 @@ public class JointBudgetEntity extends BudgetEntity {
 
     // Other joint-specific fields here, such as group chat IDs, approval statuses, etc.
     private Integer chatId;
-
-    public Set<UserEntity> getMembers() {
-        return members;
-    }
-
-    public void setMembers(Set<UserEntity> members) {
-        this.members = members;
-    }
-
-    public Integer getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(Integer chatId) {
-        this.chatId = chatId;
-    }
-
-    public Set<JointBudgetCategoryEntity> getJointBudgetCategories() {
-        return jointBudgetCategories;
-    }
-
-    public void setJointBudgetCategories(Set<JointBudgetCategoryEntity> jointBudgetCategories) {
-        this.jointBudgetCategories = jointBudgetCategories;
-    }
-
-    public void addJointBudgetCategory(JointBudgetCategoryEntity category) {
-        jointBudgetCategories.add(category);
-        category.setJointBudget(this);
-    }
-
-    public void removeJointBudgetCategory(JointBudgetCategoryEntity category) {
-        jointBudgetCategories.remove(category);
-        category.setJointBudget(null);
-    }
 }
