@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,6 +24,9 @@ public class BudgetCategoryEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
+
+    @OneToMany(mappedBy = "budgetCategory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TransactionEntity> transactions;
 
     @Column
     private String notes;

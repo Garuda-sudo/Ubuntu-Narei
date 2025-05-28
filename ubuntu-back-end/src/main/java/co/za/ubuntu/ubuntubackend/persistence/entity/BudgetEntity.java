@@ -93,9 +93,6 @@ public class BudgetEntity {
     @OneToMany(mappedBy = "budget", fetch = FetchType.LAZY)
     private List<BudgetIncomeSplitEntity> budgetIncomeSplitEntity;
 
-    @OneToMany(mappedBy = "budget")
-    private Set<TransactionEntity> transactions = new HashSet<>();
-
     @Column(name = "version_number")
     private Integer versionNumber;
 

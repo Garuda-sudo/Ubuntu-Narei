@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Set;
 
 /**
  * The income entity represents an income source for an user, and is linked to
@@ -31,6 +32,9 @@ public class IncomeEntity {
     @NotNull
     @Column(name = "income_amount", nullable = false, length = 50)
     private BigDecimal incomeAmount;
+
+    @OneToMany(mappedBy = "income", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TransactionEntity> transactions;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)

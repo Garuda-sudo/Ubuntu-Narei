@@ -9,6 +9,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -48,10 +49,10 @@ public class IncomeSourceEntity {
     private BigDecimal averageAmount;
 
     @Column(name = "created_at", updatable = false)
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
 
 }

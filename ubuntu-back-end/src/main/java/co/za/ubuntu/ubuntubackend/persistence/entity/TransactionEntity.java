@@ -79,12 +79,8 @@ public class TransactionEntity {
     @JoinColumn(name = "account_id", nullable = false)
     private AccountEntity account;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "budget_id", nullable = false)
-    private BudgetEntity budget;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
-    private CategoryEntity category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "income_id")
+    private IncomeEntity income;
 
 }

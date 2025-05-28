@@ -40,9 +40,6 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "category")
     private Set<BudgetCategoryEntity> budgetCategories;
 
-    @OneToMany(mappedBy = "category")
-    private Set<TransactionEntity> transactions;
-
     @Column(name = "priority")
     private Integer priorityLevel;
 

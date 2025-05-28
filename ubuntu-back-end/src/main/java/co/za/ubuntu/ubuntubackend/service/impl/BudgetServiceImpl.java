@@ -317,7 +317,8 @@ public class BudgetServiceImpl implements BudgetService {
         //transactionEntity.getBudgets().add(budgetEntity);
 
         //We need to link the transaction to the respective budget
-        budgetEntity.getTransactions().add(transactionEntity);
+        //budgetEntity.getTransactions().add(transactionEntity); TODO: Get transactions from the budgetCategory
+        // joining table now
 
         var response = transactionRepository.save(transactionEntity);
 

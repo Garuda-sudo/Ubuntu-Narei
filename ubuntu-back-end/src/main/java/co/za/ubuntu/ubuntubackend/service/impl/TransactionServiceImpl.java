@@ -4,6 +4,7 @@ import co.za.ubuntu.model.Budget;
 import co.za.ubuntu.model.Transaction;
 import co.za.ubuntu.model.TransactionResponse;
 import co.za.ubuntu.ubuntubackend.domain.exception.NotFoundException;
+import co.za.ubuntu.ubuntubackend.persistence.entity.BudgetCategoryEntity;
 import co.za.ubuntu.ubuntubackend.persistence.entity.BudgetEntity;
 import co.za.ubuntu.ubuntubackend.persistence.entity.CategoryEntity;
 import co.za.ubuntu.ubuntubackend.persistence.entity.TransactionEntity;
@@ -59,7 +60,8 @@ public class TransactionServiceImpl implements TransactionService {
 
         //Create transaction object to save away
         TransactionEntity transactionEntity = new TransactionEntity();
-        transactionEntity.setBudget(budgetEntity);
+        //TODO: The budget category needs to be set for every transaction
+        //transactionEntity.setBudget(budgetEntity);
         transactionEntity.setAmount(BigDecimal.valueOf(transaction.getAmount()));
         transactionEntity.setDate(currentDateTime);
         //transactionEntity.setUserEntity(budgetEntity.getUserEntity());
@@ -70,7 +72,8 @@ public class TransactionServiceImpl implements TransactionService {
 //        );
 
         //Add transaction to budget
-        budgetEntity.getTransactions().add(transactionEntity);
+        //The transaction will be linked to the budget category so it needs to be added there
+        budgetEntity.getBudgetCategories().stream().map(BudgetCategoryEntity::getTransactions).collect(Collectors.toList()); //TODO
 
         //Cascade should flush linked budget to the transaction entity when saving to the database
         var response = transactionRepository.save(transactionEntity);
