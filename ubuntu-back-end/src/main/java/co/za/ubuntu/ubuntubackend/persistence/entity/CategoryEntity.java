@@ -54,4 +54,7 @@ public class CategoryEntity {
     @Column(name = "date_updated", nullable = false)
     private LocalDateTime dateUpdated;
 
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
 }

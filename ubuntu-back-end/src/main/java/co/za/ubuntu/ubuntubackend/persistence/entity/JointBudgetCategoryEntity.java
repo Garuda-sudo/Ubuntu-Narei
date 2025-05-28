@@ -16,7 +16,7 @@ public class JointBudgetCategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "joint_budget_id", nullable = false)
