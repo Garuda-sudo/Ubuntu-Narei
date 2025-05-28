@@ -2,67 +2,51 @@ package co.za.ubuntu.ubuntubackend.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "discount", schema = "budgetbuddy",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "budget_category_id"),
-        @UniqueConstraint(columnNames = "joint_budget_category_id")
-    }
-)
+@Table(name = "discount", schema = "budgetbuddy")
 @Getter
 @Setter
+@NoArgsConstructor
 public class DiscountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    // Link discount to either individual or joint budget category
+    // Link to the goal that determines budget & categories
     @ManyToOne
-    @JoinColumn(name = "budget_category_id", nullable = true)
-    private BudgetCategoryEntity budgetCategory;
+    @JoinColumn(name = "goal_id")
+    private GoalEntity goal;
 
-    @ManyToOne
-    @JoinColumn(name = "joint_budget_category_id", nullable = true)
-    private JointBudgetCategoryEntity jointBudgetCategory;
+    // Main redeemer (usually the single user or group lead)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "redeemed_by_user_id", nullable = false)
+    private UserEntity redeemedBy;
 
-    @Column(nullable = false)
-    private String discountType; // e.g., "10% Discount", "Cashback"
+    @Column(name = "discount_type", nullable = false)
+    private String discountType; // e.g., "10% OFF", "Cashback"
 
     @Column(nullable = false)
     private boolean redeemed = false;
 
-    @ManyToMany
-    @JoinTable(
-        name = "discount_users",
-        joinColumns = @JoinColumn(name = "discount_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<UserEntity> eligibleUsers = new HashSet<>(); // Users who can redeem in joint budgets
+    @Column(name = "expiry_date", nullable = false)
+    private LocalDateTime expiryDate;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;  // User who can redeem for a single budget
-
-    @Column(nullable = false)
-    private LocalDate expiryDate;
-
-    public DiscountEntity() {}
-
-    public DiscountEntity(BudgetCategoryEntity budgetCategory,
-                          JointBudgetCategoryEntity jointBudgetCategory,
+    public DiscountEntity(GoalEntity goal,
                           UserEntity user,
                           String discountType,
-                          LocalDate expiryDate) {
-        this.budgetCategory = budgetCategory;
-        this.jointBudgetCategory = jointBudgetCategory;
-        this.user = user;
+                          LocalDateTime expiryDate) {
+        this.goal = goal;
+        this.redeemedBy = user;
         this.discountType = discountType;
         this.expiryDate = expiryDate;
         this.redeemed = false;

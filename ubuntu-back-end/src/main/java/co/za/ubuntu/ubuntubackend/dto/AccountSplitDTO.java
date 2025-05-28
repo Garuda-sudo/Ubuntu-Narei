@@ -15,7 +15,7 @@ public class AccountSplitDTO extends Account {
 
     Integer accountId;
     String splitType;
-    Double incomeAmount;
+    BigDecimal incomeAmount;
     BigDecimal allocationPercentage;
 
 }

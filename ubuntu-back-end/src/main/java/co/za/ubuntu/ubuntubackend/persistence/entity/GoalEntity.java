@@ -22,12 +22,16 @@ public class GoalEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String name;
+
     private BigDecimal targetAmount;
+
     private LocalDate targetDate;
+
     private String description;
+
     private int durationMonths;
 
     @Enumerated(EnumType.STRING)
@@ -36,10 +40,30 @@ public class GoalEntity {
     // For short-term goals (e.g., 50% spending)
     private Integer triggerPercentage;
 
-    @ManyToMany(mappedBy = "longTermGoals")
+    @ManyToMany
+    @JoinTable(
+        name = "goal_budgets",
+        schema = "budgetbuddy",
+        joinColumns = @JoinColumn(name = "goal_id"),
+        inverseJoinColumns = @JoinColumn(name = "budget_id")
+    )
     private List<BudgetEntity> budgets;
+
+    //For micro goals we may have a goal linked to many categories if required
+    @ManyToMany
+    @JoinTable(
+        name = "goal_budget_categories",
+        schema = "budgetbuddy",
+        joinColumns = @JoinColumn(name = "goal_id"),
+        inverseJoinColumns = @JoinColumn(name = "budget_category_id")
+    )
+    private List<BudgetCategoryEntity> budgetCategories;
 
     @ManyToMany(mappedBy = "goals")
     private List<UserEntity> users;
+
+    // One goal can have multiple discounts
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DiscountEntity> discounts;
 
 }

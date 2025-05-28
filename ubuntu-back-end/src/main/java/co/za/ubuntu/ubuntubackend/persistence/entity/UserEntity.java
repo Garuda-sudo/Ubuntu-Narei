@@ -43,7 +43,7 @@ public class UserEntity {
 
     @ManyToMany
     @JoinTable(
-        name = "user_goal",
+        name = "user_goals",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "goal_id")
     )

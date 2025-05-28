@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +29,7 @@ public class CategoryEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "type")
     private CategoryType type; // Enum type for predefined categories
 
     @NotNull
@@ -49,10 +51,10 @@ public class CategoryEntity {
 
     @NotNull
     @Column(name = "date_created", nullable = false)
-    private Instant dateCreated;
+    private LocalDateTime dateCreated;
 
     @NotNull
     @Column(name = "date_updated", nullable = false)
-    private Instant dateUpdated;
+    private LocalDateTime dateUpdated;
 
 }

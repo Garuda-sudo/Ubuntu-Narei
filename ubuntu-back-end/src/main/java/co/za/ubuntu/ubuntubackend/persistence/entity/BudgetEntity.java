@@ -27,6 +27,7 @@ import java.util.*;
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "budget_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("INDIVIDUAL")
 @Table(name = "budget", schema = "budgetbuddy")
 public class BudgetEntity {
     @Id
@@ -110,5 +111,6 @@ public class BudgetEntity {
     private RolloverType rolloverType; // Enum defining how rollover happens
 
     @Column(name = "rollover_group_id")
-    private UUID rolloverGroupId;
+    private Integer rolloverGroupId; // Have a single ID for the entire series of budget versions so that we can query
+    // them all at once for faster lookup times
 }
