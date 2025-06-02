@@ -16,3 +16,18 @@ spring:
     url: jdbc:postgresql://localhost:5433/Ubuntu_db?currenSchema=budgetbuddy
   flyway:
     enabled: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8084/realms/BudgetBuddy
+  keycloak:
+    realm: BudgetBuddy
+    auth-server-url: http://localhost:8084/realms/BudgetBuddy
+    resource: budgetbuddy-system-client
+    credentials:
+      secret: YOUR_CLIENT_SECRET_HERE
+    client-id: budgetbuddy-system-client
+    admin-username: admin
+    admin-password: admin
+    server-url: http://localhost:8084
