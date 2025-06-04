@@ -21,13 +21,14 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8084/realms/BudgetBuddy
-  keycloak:
-    realm: BudgetBuddy
-    auth-server-url: http://localhost:8084/realms/BudgetBuddy
-    resource: budgetbuddy-system-client
-    credentials:
-      secret: YOUR_CLIENT_SECRET_HERE
-    client-id: budgetbuddy-system-client
-    admin-username: admin
-    admin-password: admin
-    server-url: http://localhost:8084
+
+keycloak:
+  realm: Budgetbuddy
+  authServerUrl: http://localhost:8084
+  resource: budgetbuddy-system-client
+  credentials:
+    secret: 0iKRgUQveN4UiuPd0otOwxEyomQAIZSu
+  clientId: budgetbuddy-system-client
+  adminUsername: admin
+  adminPassword: admin
+  serverUrl: http://localhost:8084

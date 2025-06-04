@@ -80,13 +80,6 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
-        <!-- Optional: WebClient for manual API calls (if you don't use Keycloak's SDK) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-
 
         <!--Utility Dependencies-->
         <dependency>
